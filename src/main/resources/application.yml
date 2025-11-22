@@ -17,6 +17,6 @@ spring:
     open-in-view: false
 
 openai:
-  api-key : yourId
+  api-key : yourkey
   model: gpt-5-mini
   base-url: https://api.openai.com/v1

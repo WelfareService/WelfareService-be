@@ -2,6 +2,8 @@ package com.welfarebot.recommendation.controller;
 
 import com.welfarebot.recommendation.dto.MarkerResponse;
 import com.welfarebot.recommendation.service.BenefitCatalogService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,11 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/benefits")
+@Tag(name = "Benefit Marker API", description = "카카오맵 마커용 혜택 위치 API")
 public class MarkerController {
 
     private final BenefitCatalogService catalogService;
 
     @GetMapping("/locations")
+    @Operation(summary = "전체 혜택 위치 조회", description = "위치 정보가 있는 혜택을 카카오맵 마커 형식으로 반환합니다.")
     public MarkerResponse getLocations() {
         List<MarkerResponse.Marker> markers = catalogService.getAll().stream()
                 .filter(b -> b.getLocation() != null)

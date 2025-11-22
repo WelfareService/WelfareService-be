@@ -9,4 +9,5 @@ public class GptMatchResponse {
     private String assistantMessage;
     private List<String> signals;
     private Map<String, Double> scores;
+    private Boolean insufficientInfo;
 }
