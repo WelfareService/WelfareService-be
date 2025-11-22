@@ -31,6 +31,13 @@ public class RecommendationService {
 
         Optional<User> userOpt = userService.find(userId);
 
+        if (needsMoreInfo(message, gpt.getSignals())) {
+            return ChatResponse.builder()
+                    .assistantMessage("현재 상황을 조금 더 알 수 있을까요?")
+                    .recommendations(List.of())
+                    .build();
+        }
+
         List<Map.Entry<String, Double>> top =
                 gpt.getScores().entrySet().stream()
                         .sorted((a, b) -> Double.compare(b.getValue(), a.getValue()))
@@ -123,5 +130,19 @@ public class RecommendationService {
             return false;
         }
         return value.toLowerCase().contains(keyword.toLowerCase());
+    }
+
+    private boolean needsMoreInfo(String message, List<String> signals) {
+        if (message == null || signals == null || signals.isEmpty()) {
+            return false;
+        }
+        String normalizedMessage = message.toLowerCase();
+        boolean hasDigit = normalizedMessage.matches(".*\\d+.*");
+
+        if (signals.contains("주거불안") && !hasDigit) {
+            log.debug("[MoreInfo] Message missing rent amount detail for signals {}", signals);
+            return true;
+        }
+        return false;
     }
 }
