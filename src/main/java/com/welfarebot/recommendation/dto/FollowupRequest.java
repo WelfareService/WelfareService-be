@@ -7,4 +7,6 @@ import lombok.Data;
 public class FollowupRequest {
     private String conversationHistory;
     private List<String> signals;
+    private String lastUserMessage;
+    private String lastAssistantMessage;
 }

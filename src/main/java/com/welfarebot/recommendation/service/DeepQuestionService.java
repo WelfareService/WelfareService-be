@@ -25,11 +25,14 @@ public class DeepQuestionService {
     @Value("${openai.base-url}")
     private String baseUrl;
 
-    public String generateFollowup(String history, List<String> signals) {
+    public String generateFollowup(String history, List<String> signals,
+                                   String lastUserMessage, String lastAssistantMessage) {
 
         String prompt = loadPrompt("prompt_deep_question_engine.txt")
                 .replace("<<CONVERSATION_HISTORY>>", history != null ? history : "")
-                .replace("<<DETECTED_SIGNALS_JSON>>", objectToJson(signals));
+                .replace("<<DETECTED_SIGNALS_JSON>>", objectToJson(signals))
+                .replace("<<LAST_USER_MESSAGE>>", lastUserMessage != null ? lastUserMessage : "")
+                .replace("<<LAST_ASSISTANT_MESSAGE>>", lastAssistantMessage != null ? lastAssistantMessage : "");
 
         Map<String, Object> body = Map.of(
                 "model", model,

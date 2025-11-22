@@ -20,7 +20,9 @@ public class FollowupController {
     public FollowupResponse followup(@RequestBody FollowupRequest req) {
         String question = deepQuestionService.generateFollowup(
                 req.getConversationHistory(),
-                req.getSignals()
+                req.getSignals(),
+                req.getLastUserMessage(),
+                req.getLastAssistantMessage()
         );
         return FollowupResponse.builder()
                 .followupQuestion(question)

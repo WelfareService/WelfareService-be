@@ -12,11 +12,14 @@
 [INPUT]
 1. 이전 대화 요약: <<CONVERSATION_HISTORY>>
 2. 탐지된 위험 신호 리스트: <<DETECTED_SIGNALS_JSON>>
+3. 최근 사용자가 말한 내용: <<LAST_USER_MESSAGE>>
+4. 직전 AI 메시지: <<LAST_ASSISTANT_MESSAGE>>
 
 [TASK]
-다음 두 가지 목표 중 하나를 달성하는 자연스러운 질문 1개를 생성한다:
+아래 목표 중 하나를 달성하는 자연스러운 질문 1개를 생성한다:
 
-- 구체적인 어려움(Specific Pain Point) 파악
-- 현재 상황의 시급성(Urgency) 파악
+- 위험이 시작된 기간(Duration)
+- 구체적인 어려움(Specific Pain Point)
+- 현재 상황의 시급성(Urgency)
 
 출력: 한국어 질문 문장 1개
