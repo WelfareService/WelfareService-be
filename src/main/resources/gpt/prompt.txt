@@ -1,0 +1,3 @@
+사용자 발화를 분석해 취약 신호 태그(status_tags)와
+카테고리 점수(category_scores)를 JSON으로 반환하라.
+출력은 반드시 JSON 문자열만 포함해야 한다.

@@ -1,0 +1,2202 @@
+[
+  {
+    "benefit_id": "DG-HOU-001",
+    "title": "청년월세 한시 특별지원(복지로)",
+    "category": "주거",
+    "provider": "보건복지부",
+    "summary": "저소득 무주택 독립청년에게 월세를 현금으로 지원",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 34,
+      "residence": [
+        "대구",
+        "대구 북구",
+        "산격동"
+      ],
+      "income_rule": "중위소득 60% 이하 등 공고 기준",
+      "status_tags": [
+        "저소득",
+        "주거취약",
+        "미취업"
+      ],
+      "other_rules": [
+        "무주택",
+        "독립거주",
+        "본인명의 임대차"
+      ]
+    },
+    "benefit": {
+      "type": "현금",
+      "amount_or_detail": "월 최대 20만원 내외(공고 기준)"
+    },
+    "apply_info": {
+      "channel": [
+        "복지로",
+        "주민센터"
+      ],
+      "docs": [
+        "주민등록등본",
+        "임대차계약서",
+        "소득확인서류"
+      ],
+      "process": "온라인 또는 행정복지센터 신청",
+      "contact": "복지로/주거지 주민센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.95,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-HOU-002",
+    "title": "대구 청년월세지원(대구시)",
+    "category": "주거",
+    "provider": "대구광역시",
+    "summary": "대구 거주 청년의 월세 부담 완화 지원",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구",
+        "대구 북구",
+        "산격동"
+      ],
+      "income_rule": "대구시 공고 기준",
+      "status_tags": [
+        "주거취약",
+        "저소득",
+        "미취업"
+      ],
+      "other_rules": [
+        "무주택",
+        "독립거주"
+      ]
+    },
+    "benefit": {
+      "type": "현금",
+      "amount_or_detail": "월세 일부 지원(공고 기준)"
+    },
+    "apply_info": {
+      "channel": [
+        "대구청년포털",
+        "구청"
+      ],
+      "docs": [
+        "임대차계약서",
+        "등본",
+        "소득서류"
+      ],
+      "process": "대구 청년정책 포털 공고 확인 후 온라인 신청",
+      "contact": "대구시/북구청"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.9,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-HOU-003",
+    "title": "대구 청년 전월세 임차보증금 대출이자 지원",
+    "category": "주거",
+    "provider": "대구광역시",
+    "summary": "청년 전월세 보증금 대출 이자의 일부를 지원",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구",
+        "대구 북구",
+        "산격동"
+      ],
+      "income_rule": "대구시 공고 기준",
+      "status_tags": [
+        "주거취약",
+        "저소득"
+      ],
+      "other_rules": [
+        "무주택",
+        "임차계약 체결"
+      ]
+    },
+    "benefit": {
+      "type": "대출/이자",
+      "amount_or_detail": "이자 최대 3%대 지원(공고 기준)"
+    },
+    "apply_info": {
+      "channel": [
+        "대구청년포털",
+        "금융기관"
+      ],
+      "docs": [
+        "임대차계약서",
+        "등본",
+        "대출서류"
+      ],
+      "process": "공고 확인 → 협약은행 대출 → 이자지원 신청",
+      "contact": "대구시 청년정책 담당"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.88,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-HOU-004",
+    "title": "LH 행복주택/청년전세임대(대구 북구권)",
+    "category": "주거",
+    "provider": "LH",
+    "summary": "청년·저소득층 대상 저렴한 공공임대/전세임대 제공",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구",
+        "대구 북구"
+      ],
+      "income_rule": "LH 공고 기준",
+      "status_tags": [
+        "주거취약",
+        "저소득"
+      ],
+      "other_rules": [
+        "무주택",
+        "소득/자산 기준 충족"
+      ]
+    },
+    "benefit": {
+      "type": "주거",
+      "amount_or_detail": "공공임대/전세임대 입주"
+    },
+    "apply_info": {
+      "channel": [
+        "LH청약센터",
+        "주거복지지사"
+      ],
+      "docs": [
+        "등본",
+        "가구소득/자산서류"
+      ],
+      "process": "LH 공고 → 청약/신청 → 심사 후 입주",
+      "contact": "LH 대구 주거복지지사"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.87,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-HOU-005",
+    "title": "주거급여(청년 분리지급)",
+    "category": "주거",
+    "provider": "보건복지부",
+    "summary": "부모와 따로 사는 저소득 청년의 임차료 지원",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 34,
+      "residence": [
+        "대구",
+        "대구 북구",
+        "산격동"
+      ],
+      "income_rule": "중위소득 47% 이하 등",
+      "status_tags": [
+        "저소득",
+        "주거취약"
+      ],
+      "other_rules": [
+        "가구 분리",
+        "임차가구"
+      ]
+    },
+    "benefit": {
+      "type": "현금",
+      "amount_or_detail": "임차료 기준액 내 지원"
+    },
+    "apply_info": {
+      "channel": [
+        "복지로",
+        "주민센터"
+      ],
+      "docs": [
+        "등본",
+        "임대차계약서",
+        "소득서류"
+      ],
+      "process": "복지로/주민센터 신청",
+      "contact": "산격동 행정복지센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.86,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-HOU-006",
+    "title": "긴급복지 주거지원",
+    "category": "주거",
+    "provider": "보건복지부",
+    "summary": "갑작스런 위기(실직/단전/체납 등)로 주거가 불안정한 청년 긴급 지원",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구 북구",
+        "산격동"
+      ],
+      "income_rule": "긴급복지 기준",
+      "status_tags": [
+        "주거취약",
+        "소득감소",
+        "위기청년"
+      ],
+      "other_rules": [
+        "위기사유 증빙"
+      ]
+    },
+    "benefit": {
+      "type": "현금",
+      "amount_or_detail": "임시거처/임차료 지원"
+    },
+    "apply_info": {
+      "channel": [
+        "주민센터",
+        "긴급복지콜센터"
+      ],
+      "docs": [
+        "신분증",
+        "위기사유 증빙"
+      ],
+      "process": "위기 상담 → 현장 확인 → 지원결정",
+      "contact": "129 또는 북구청"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.83,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-HOU-007",
+    "title": "대구 청년희망주택/공공임대 패키지",
+    "category": "주거",
+    "provider": "대구광역시",
+    "summary": "대구 청년용 공공임대·보증금 지원 패키지",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "대구시 공고 기준",
+      "status_tags": [
+        "주거취약"
+      ],
+      "other_rules": [
+        "무주택"
+      ]
+    },
+    "benefit": {
+      "type": "주거",
+      "amount_or_detail": "청년희망주택 입주 + 비용지원"
+    },
+    "apply_info": {
+      "channel": [
+        "대구청년포털"
+      ],
+      "docs": [
+        "등본",
+        "소득/자산서류"
+      ],
+      "process": "공고 확인 → 온라인 신청 → 심사",
+      "contact": "대구시 청년주거 담당"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.82,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-HOU-008",
+    "title": "에너지바우처",
+    "category": "주거",
+    "provider": "산업통상자원부/복지로",
+    "summary": "저소득 청년 가구의 냉난방비 지원",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구 북구"
+      ],
+      "income_rule": "수급/차상위 등",
+      "status_tags": [
+        "저소득"
+      ],
+      "other_rules": [
+        "가구기준 충족"
+      ]
+    },
+    "benefit": {
+      "type": "바우처",
+      "amount_or_detail": "전기·가스·연탄 등 에너지 비용"
+    },
+    "apply_info": {
+      "channel": [
+        "복지로",
+        "주민센터"
+      ],
+      "docs": [
+        "등본",
+        "수급/차상위 증명"
+      ],
+      "process": "신청 후 바우처 지급",
+      "contact": "129/주민센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.8,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-HOU-009",
+    "title": "전기·가스요금 복지할인",
+    "category": "주거",
+    "provider": "한국전력/가스공사",
+    "summary": "수급·차상위·한부모 등 취약청년 가구 공과금 감면",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "수급/차상위/한부모",
+      "status_tags": [
+        "저소득",
+        "한부모"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "감면",
+      "amount_or_detail": "전기/가스 기본요금·사용료 할인"
+    },
+    "apply_info": {
+      "channel": [
+        "주민센터",
+        "사업자 고객센터"
+      ],
+      "docs": [
+        "수급/차상위/한부모 증명"
+      ],
+      "process": "자격 확인 후 요금 할인 적용",
+      "contact": "한전/도시가스 고객센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.78,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-HOU-010",
+    "title": "통신비/인터넷 요금 감면",
+    "category": "주거",
+    "provider": "과기정통부/통신사",
+    "summary": "저소득·위기청년 통신요금 감면",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "수급/차상위/장애 등",
+      "status_tags": [
+        "저소득",
+        "장애"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "감면",
+      "amount_or_detail": "이동통신/인터넷 비용 일부 감면"
+    },
+    "apply_info": {
+      "channel": [
+        "통신사",
+        "주민센터"
+      ],
+      "docs": [
+        "자격증명서류"
+      ],
+      "process": "통신사 신청 또는 주민센터 연계",
+      "contact": "각 통신사 고객센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.77,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-HOU-011",
+    "title": "기초생활보장 생계/주거/교육급여",
+    "category": "생계",
+    "provider": "보건복지부",
+    "summary": "최저생계·주거·교육을 포괄 지원하는 기본 제도",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "산격동"
+      ],
+      "income_rule": "중위소득 기준 이하",
+      "status_tags": [
+        "저소득",
+        "위기청년"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "현금",
+      "amount_or_detail": "급여종류별 현금/서비스"
+    },
+    "apply_info": {
+      "channel": [
+        "복지로",
+        "주민센터"
+      ],
+      "docs": [
+        "가구소득·재산 서류"
+      ],
+      "process": "상담→조사→급여 결정",
+      "contact": "산격동 행정복지센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.9,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-HOU-012",
+    "title": "긴급복지 생계지원",
+    "category": "생계",
+    "provider": "보건복지부",
+    "summary": "갑작스런 실직/소득중단 청년에게 단기 생계비 지원",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구 북구"
+      ],
+      "income_rule": "긴급복지 위기기준",
+      "status_tags": [
+        "소득감소",
+        "결식위험"
+      ],
+      "other_rules": [
+        "위기사유 증빙"
+      ]
+    },
+    "benefit": {
+      "type": "현금",
+      "amount_or_detail": "가구규모별 생계비(단기)"
+    },
+    "apply_info": {
+      "channel": [
+        "주민센터",
+        "129"
+      ],
+      "docs": [
+        "위기사유 증빙",
+        "신분증"
+      ],
+      "process": "신청→현장 확인→지원",
+      "contact": "129/북구청"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.85,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-JOB-013",
+    "title": "청년도전지원사업(대구 북구)",
+    "category": "일자리/교육",
+    "provider": "대구북구",
+    "summary": "구직단념·장기미취업 청년의 사회진입 프로그램+참여수당",
+    "eligibility": {
+      "age_min": 18,
+      "age_max": 39,
+      "residence": [
+        "대구",
+        "대구 북구",
+        "산격동"
+      ],
+      "income_rule": "무관(일부 과정 조건)",
+      "status_tags": [
+        "미취업",
+        "구직단념"
+      ],
+      "other_rules": [
+        "최근 6개월 취업·교육 이력 없음 등 공고기준"
+      ]
+    },
+    "benefit": {
+      "type": "프로그램",
+      "amount_or_detail": "단기~장기 과정 + 최대 수백만원 참여수당"
+    },
+    "apply_info": {
+      "channel": [
+        "북구청",
+        "대구청년센터"
+      ],
+      "docs": [
+        "신분증",
+        "구직단념 확인서류(해당 시)"
+      ],
+      "process": "공고 확인→신청→상담→프로그램 참여",
+      "contact": "북구청 일자리정책과"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": "북구청/청년센터"
+    },
+    "priority_score": 0.97,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-JOB-014",
+    "title": "국민취업지원제도(1·2유형)",
+    "category": "일자리/교육",
+    "provider": "고용노동부",
+    "summary": "저소득·미취업 청년 구직촉진수당+취업지원",
+    "eligibility": {
+      "age_min": 18,
+      "age_max": 34,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "유형별 상이",
+      "status_tags": [
+        "미취업",
+        "저소득"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "현금+프로그램",
+      "amount_or_detail": "구직촉진수당(월50만원×6개월 등)"
+    },
+    "apply_info": {
+      "channel": [
+        "고용24",
+        "고용센터"
+      ],
+      "docs": [
+        "구직등록",
+        "소득서류"
+      ],
+      "process": "온라인 신청→상담→계획 수립→수당/서비스",
+      "contact": "대구고용센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.93,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-JOB-015",
+    "title": "청년내일채움공제(해당 시)",
+    "category": "금융",
+    "provider": "고용노동부",
+    "summary": "중소기업 취업 청년의 자산형성 지원",
+    "eligibility": {
+      "age_min": 15,
+      "age_max": 34,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "취업상태 기준",
+      "status_tags": [
+        "취업초기",
+        "저소득가능"
+      ],
+      "other_rules": [
+        "중소기업 정규직 취업"
+      ]
+    },
+    "benefit": {
+      "type": "자산형성",
+      "amount_or_detail": "2~3년 만기 목돈"
+    },
+    "apply_info": {
+      "channel": [
+        "고용센터",
+        "운영기관"
+      ],
+      "docs": [
+        "근로계약서"
+      ],
+      "process": "기업 참여 확인→청년 신청→가입",
+      "contact": "고용센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.75,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-JOB-016",
+    "title": "미래내일 일경험(인턴/프로젝트형)",
+    "category": "일자리/교육",
+    "provider": "고용노동부",
+    "summary": "경력 없는 청년에게 기업·공공 일경험 제공",
+    "eligibility": {
+      "age_min": 18,
+      "age_max": 34,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "무관",
+      "status_tags": [
+        "미취업",
+        "경험부족"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "프로그램",
+      "amount_or_detail": "일경험 + 수당"
+    },
+    "apply_info": {
+      "channel": [
+        "고용24"
+      ],
+      "docs": [
+        "구직등록"
+      ],
+      "process": "프로그램 공고→지원→매칭",
+      "contact": "고용노동부/운영기관"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.8,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-JOB-017",
+    "title": "대구 청년사회진입 활동지원금(상담연결형 청년수당)",
+    "category": "일자리/교육",
+    "provider": "대구광역시",
+    "summary": "미취업 청년에게 상담+활동포인트 지원",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "대구시 공고",
+      "status_tags": [
+        "미취업",
+        "구직중"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "바우처",
+      "amount_or_detail": "활동포인트/카드 지급"
+    },
+    "apply_info": {
+      "channel": [
+        "대구청년포털"
+      ],
+      "docs": [
+        "구직등록",
+        "등본"
+      ],
+      "process": "공고→온라인 신청→상담 후 지급",
+      "contact": "대구청년센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.9,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-JOB-018",
+    "title": "대구 청년구직활동지원(취업패키지/교육)",
+    "category": "일자리/교육",
+    "provider": "대구광역시",
+    "summary": "취업역량 교육, 면접/자소서/훈련 연계",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "공고",
+      "status_tags": [
+        "미취업"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "프로그램",
+      "amount_or_detail": "취업교육/멘토링/연계"
+    },
+    "apply_info": {
+      "channel": [
+        "대구청년포털",
+        "청년센터"
+      ],
+      "docs": [
+        "신청서"
+      ],
+      "process": "공고 신청→참여",
+      "contact": "대구청년센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.82,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-JOB-019",
+    "title": "대구 청년창업지원(창업놀이터/창업바우처)",
+    "category": "일자리/교육",
+    "provider": "대구광역시/대구북구",
+    "summary": "예비·초기창업 청년에게 공간/교육/사업화 지원",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구 북구",
+        "산격동"
+      ],
+      "income_rule": "공고",
+      "status_tags": [
+        "창업희망",
+        "미취업"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "공간/시설",
+      "amount_or_detail": "입주공간+교육+사업화"
+    },
+    "apply_info": {
+      "channel": [
+        "북구 창업놀이터",
+        "대구청년포털"
+      ],
+      "docs": [
+        "사업계획서"
+      ],
+      "process": "공고→심사→입주/지원",
+      "contact": "북구 창업놀이터"
+    },
+    "location": {
+      "lat": 35.895,
+      "lng": 128.608,
+      "radius_m": 3000,
+      "address_text": "북구 대학로 일대"
+    },
+    "priority_score": 0.84,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-JOB-020",
+    "title": "내일배움카드(청년 직업훈련비)",
+    "category": "일자리/교육",
+    "provider": "고용노동부",
+    "summary": "직업훈련·자격증 교육비를 카드로 지원",
+    "eligibility": {
+      "age_min": 18,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "유형별",
+      "status_tags": [
+        "미취업",
+        "저소득가능"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "바우처",
+      "amount_or_detail": "훈련비 최대 수백만원"
+    },
+    "apply_info": {
+      "channel": [
+        "고용24"
+      ],
+      "docs": [
+        "구직등록"
+      ],
+      "process": "카드 발급→훈련 선택",
+      "contact": "고용센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.88,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-JOB-021",
+    "title": "대구 청년취업성공패키지(연계형)",
+    "category": "일자리/교육",
+    "provider": "대구광역시",
+    "summary": "상담→훈련→일경험→취업까지 통합 연계",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "공고",
+      "status_tags": [
+        "미취업"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "프로그램",
+      "amount_or_detail": "패키지형 지원"
+    },
+    "apply_info": {
+      "channel": [
+        "대구청년센터"
+      ],
+      "docs": [
+        "신청서"
+      ],
+      "process": "센터 접수→상담→참여",
+      "contact": "대구청년센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.8,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-JOB-022",
+    "title": "대구 청년정책네트워크/멘토링 참여",
+    "category": "일자리/교육",
+    "provider": "대구광역시",
+    "summary": "정책참여·멘토링·커뮤니티 활동 지원",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "무관",
+      "status_tags": [
+        "사회참여희망",
+        "고립완화"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "프로그램",
+      "amount_or_detail": "교육/네트워킹/활동지원"
+    },
+    "apply_info": {
+      "channel": [
+        "대구청년포털"
+      ],
+      "docs": [
+        "신청서"
+      ],
+      "process": "모집 공고→지원",
+      "contact": "대구시"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.65,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-JOB-023",
+    "title": "장애청년 취업지원(직업재활/보조공학)",
+    "category": "일자리/교육",
+    "provider": "보건복지부/고용노동부",
+    "summary": "장애·경계선지능 청년 취업훈련/보조공학/연계",
+    "eligibility": {
+      "age_min": 18,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "장애등록/대상",
+      "status_tags": [
+        "장애",
+        "경계선지능"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "프로그램",
+      "amount_or_detail": "직업훈련+연계"
+    },
+    "apply_info": {
+      "channel": [
+        "복지로",
+        "장애인고용공단"
+      ],
+      "docs": [
+        "장애등록"
+      ],
+      "process": "상담→훈련/알선",
+      "contact": "장애인고용공단 대구지사"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.78,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-JOB-024",
+    "title": "자립준비청년 취업·자립 프로그램",
+    "category": "자립/가족",
+    "provider": "대구광역시/보건복지부",
+    "summary": "보호종료 청년 대상 자립·취업·주거 종합지원",
+    "eligibility": {
+      "age_min": 18,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "대상자",
+      "status_tags": [
+        "자립준비청년"
+      ],
+      "other_rules": [
+        "보호종료 확인"
+      ]
+    },
+    "benefit": {
+      "type": "프로그램",
+      "amount_or_detail": "사후관리+자립정착지원"
+    },
+    "apply_info": {
+      "channel": [
+        "아동자립지원단",
+        "복지로"
+      ],
+      "docs": [
+        "보호종료 확인"
+      ],
+      "process": "대상 등록→사례관리",
+      "contact": "대구 자립지원기관"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.9,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-FOOD-025",
+    "title": "산격기초푸드뱅크",
+    "category": "지역자원",
+    "provider": "대구북구/푸드뱅크",
+    "summary": "저소득·결식 위험 청년에게 식품·생필품 무상 지원",
+    "eligibility": {
+      "age_min": 0,
+      "age_max": 99,
+      "residence": [
+        "대구 북구",
+        "산격동"
+      ],
+      "income_rule": "저소득·위기 가구",
+      "status_tags": [
+        "결식위험",
+        "저소득"
+      ],
+      "other_rules": [
+        "기관추천/상담 후 이용"
+      ]
+    },
+    "benefit": {
+      "type": "물품",
+      "amount_or_detail": "식품·생필품 꾸러미"
+    },
+    "apply_info": {
+      "channel": [
+        "기관방문",
+        "복지관 연계"
+      ],
+      "docs": [
+        "저소득/위기 증빙 또는 추천"
+      ],
+      "process": "복지관/주민센터 연계 후 배분",
+      "contact": "053-381-9193"
+    },
+    "location": {
+      "lat": 35.896,
+      "lng": 128.61,
+      "radius_m": 2500,
+      "address_text": "북구 연암로 183"
+    },
+    "priority_score": 0.96,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-FOOD-026",
+    "title": "희망나눔푸드마켓(북구)",
+    "category": "지역자원",
+    "provider": "대구북구/푸드마켓",
+    "summary": "북구 저소득층(청년 포함)에게 식품·생활물품 제공",
+    "eligibility": {
+      "age_min": 0,
+      "age_max": 99,
+      "residence": [
+        "대구 북구"
+      ],
+      "income_rule": "저소득",
+      "status_tags": [
+        "결식위험",
+        "저소득"
+      ],
+      "other_rules": [
+        "이용자 등록"
+      ]
+    },
+    "benefit": {
+      "type": "물품",
+      "amount_or_detail": "월 1회 이상 물품선택 지원"
+    },
+    "apply_info": {
+      "channel": [
+        "기관방문"
+      ],
+      "docs": [
+        "이용자 등록서류"
+      ],
+      "process": "등록→방문 선택",
+      "contact": "053-954-1377"
+    },
+    "location": {
+      "lat": 35.9,
+      "lng": 128.603,
+      "radius_m": 6000,
+      "address_text": "대구체육관로 28"
+    },
+    "priority_score": 0.9,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-FOOD-027",
+    "title": "사랑나눔푸드마켓(북구)",
+    "category": "지역자원",
+    "provider": "대구북구/푸드마켓",
+    "summary": "북구 취약계층 대상 식품·생필품 지원",
+    "eligibility": {
+      "age_min": 0,
+      "age_max": 99,
+      "residence": [
+        "대구 북구"
+      ],
+      "income_rule": "저소득",
+      "status_tags": [
+        "결식위험"
+      ],
+      "other_rules": [
+        "이용자 등록"
+      ]
+    },
+    "benefit": {
+      "type": "물품",
+      "amount_or_detail": "기부식품·생활물품 제공"
+    },
+    "apply_info": {
+      "channel": [
+        "기관방문"
+      ],
+      "docs": [
+        "등록서류"
+      ],
+      "process": "등록 확인 후 이용",
+      "contact": "053-321-1377"
+    },
+    "location": {
+      "lat": 35.946,
+      "lng": 128.551,
+      "radius_m": 12000,
+      "address_text": "관음동로9길 10-25"
+    },
+    "priority_score": 0.85,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-FOOD-028",
+    "title": "대구 푸드뱅크·마켓 배달천사(방문 어려운 청년)",
+    "category": "지역자원",
+    "provider": "대구광역시/푸드뱅크",
+    "summary": "거동/심리 문제로 방문 어려운 취약청년에게 물품 배달",
+    "eligibility": {
+      "age_min": 0,
+      "age_max": 99,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "푸드마켓 이용자 중 방문곤란",
+      "status_tags": [
+        "고립위험",
+        "결식위험"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "물품",
+      "amount_or_detail": "월 1회 식품 꾸러미 배달"
+    },
+    "apply_info": {
+      "channel": [
+        "푸드마켓",
+        "복지관"
+      ],
+      "docs": [
+        "이용자등록"
+      ],
+      "process": "이용자 등록 후 배달 신청",
+      "contact": "대구광역푸드뱅크"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": "대구 전지역"
+    },
+    "priority_score": 0.83,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-FOOD-029",
+    "title": "기초생활수급자/차상위 급식·식비 지원",
+    "category": "생계",
+    "provider": "보건복지부",
+    "summary": "결식 위험 저소득 청년의 식비/급식 지원(유형별)",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "수급/차상위",
+      "status_tags": [
+        "저소득",
+        "결식위험"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "현금/급식",
+      "amount_or_detail": "유형별 현금 또는 식사 지원"
+    },
+    "apply_info": {
+      "channel": [
+        "복지로",
+        "주민센터"
+      ],
+      "docs": [
+        "자격증명"
+      ],
+      "process": "상담→등록",
+      "contact": "주민센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.8,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-FOOD-030",
+    "title": "대구 북구 무료급식/반찬나눔 연계",
+    "category": "지역자원",
+    "provider": "대구북구/복지관",
+    "summary": "산격동 복지관 연계형 무료급식/반찬 지원",
+    "eligibility": {
+      "age_min": 0,
+      "age_max": 99,
+      "residence": [
+        "산격동"
+      ],
+      "income_rule": "저소득/위기",
+      "status_tags": [
+        "결식위험"
+      ],
+      "other_rules": [
+        "복지관 상담"
+      ]
+    },
+    "benefit": {
+      "type": "물품/급식",
+      "amount_or_detail": "식사·반찬 제공"
+    },
+    "apply_info": {
+      "channel": [
+        "복지관 방문"
+      ],
+      "docs": [
+        "상담기록"
+      ],
+      "process": "복지관 등록 후 이용",
+      "contact": "산격종합사회복지관"
+    },
+    "location": {
+      "lat": 35.893,
+      "lng": 128.61,
+      "radius_m": 2500,
+      "address_text": "산격동"
+    },
+    "priority_score": 0.75,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-FOOD-031",
+    "title": "희망저축계좌Ⅰ·Ⅱ(자산형성)",
+    "category": "금융",
+    "provider": "보건복지부/복지로",
+    "summary": "일하는 저소득 청년의 저축에 정부 매칭 지원",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "수급/차상위(유형별)",
+      "status_tags": [
+        "저소득",
+        "근로"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "자산형성",
+      "amount_or_detail": "저축액+정부지원금 매칭"
+    },
+    "apply_info": {
+      "channel": [
+        "복지로",
+        "주민센터"
+      ],
+      "docs": [
+        "근로/소득서류"
+      ],
+      "process": "신청→가입→만기수령",
+      "contact": "주민센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.82,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-FOOD-032",
+    "title": "청년내일저축계좌",
+    "category": "금융",
+    "provider": "보건복지부",
+    "summary": "근로하는 저소득 청년의 자산 형성 지원",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 34,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "중위소득 100% 이하 등",
+      "status_tags": [
+        "저소득",
+        "근로"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "자산형성",
+      "amount_or_detail": "월 저축+정부지원금"
+    },
+    "apply_info": {
+      "channel": [
+        "복지로",
+        "주민센터"
+      ],
+      "docs": [
+        "근로/소득서류"
+      ],
+      "process": "신청→적립→만기",
+      "contact": "주민센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.86,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-FOOD-033",
+    "title": "긴급복지 의료·생계 연계(결식/치료 동시위기)",
+    "category": "생계",
+    "provider": "보건복지부",
+    "summary": "실직/질병 동시 위기 청년의 의료비·생계비 단기 지원",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "긴급복지 기준",
+      "status_tags": [
+        "결식위험",
+        "건강위기"
+      ],
+      "other_rules": [
+        "위기사유"
+      ]
+    },
+    "benefit": {
+      "type": "현금",
+      "amount_or_detail": "의료비+생계비"
+    },
+    "apply_info": {
+      "channel": [
+        "주민센터",
+        "129"
+      ],
+      "docs": [
+        "진단/위기증빙"
+      ],
+      "process": "상담→결정",
+      "contact": "129"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.8,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-MH-034",
+    "title": "대구 청년마음건강센터(상담·치유)",
+    "category": "심리/건강",
+    "provider": "대구광역시",
+    "summary": "우울·불안·번아웃 청년에게 무료/저비용 상담·치료 연계",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "무관/일부 감면",
+      "status_tags": [
+        "심리위험",
+        "고립위험"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "프로그램",
+      "amount_or_detail": "심리검사/상담/치료연계"
+    },
+    "apply_info": {
+      "channel": [
+        "청년센터",
+        "전화/온라인"
+      ],
+      "docs": [
+        "신청서"
+      ],
+      "process": "예약→초기검사→상담",
+      "contact": "대구 청년마음건강센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": "대구 전역"
+    },
+    "priority_score": 0.95,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-MH-035",
+    "title": "청년마음건강지원사업(복지로)",
+    "category": "심리/건강",
+    "provider": "보건복지부",
+    "summary": "청년 대상 심리상담 바우처 지원",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "유형별",
+      "status_tags": [
+        "심리위험"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "바우처",
+      "amount_or_detail": "전문상담 이용권"
+    },
+    "apply_info": {
+      "channel": [
+        "복지로"
+      ],
+      "docs": [
+        "신청서"
+      ],
+      "process": "온라인 신청→기관배정",
+      "contact": "복지로"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.9,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-MH-036",
+    "title": "대구 사회적 고립청년 지원사업",
+    "category": "심리/건강",
+    "provider": "대구광역시",
+    "summary": "은둔·고립 청년 발굴 후 1:1 상담/회복프로그램",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "무관",
+      "status_tags": [
+        "고립위험",
+        "은둔"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "프로그램",
+      "amount_or_detail": "상담+활동지원"
+    },
+    "apply_info": {
+      "channel": [
+        "대구청년센터"
+      ],
+      "docs": [
+        "신청서"
+      ],
+      "process": "접수→상담→프로그램",
+      "contact": "대구청년센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": "대구 전역"
+    },
+    "priority_score": 0.92,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-MH-037",
+    "title": "정신건강복지센터(북구) 성인·청년 상담",
+    "category": "심리/건강",
+    "provider": "대구북구",
+    "summary": "우울·불안·중독·자살위험 등 무료 상담/치료 연계",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구 북구"
+      ],
+      "income_rule": "무관",
+      "status_tags": [
+        "심리위험"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "프로그램",
+      "amount_or_detail": "상담/치료연계"
+    },
+    "apply_info": {
+      "channel": [
+        "기관방문",
+        "전화"
+      ],
+      "docs": [
+        "없음"
+      ],
+      "process": "전화/방문 상담",
+      "contact": "북구 정신건강복지센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": "북구"
+    },
+    "priority_score": 0.85,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-MH-038",
+    "title": "자살예방·위기상담(24h)",
+    "category": "심리/건강",
+    "provider": "보건복지부",
+    "summary": "위기청년 24시간 전화/채팅 상담",
+    "eligibility": {
+      "age_min": 0,
+      "age_max": 99,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "무관",
+      "status_tags": [
+        "자살위험",
+        "심리위험"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "상담",
+      "amount_or_detail": "24시간 위기상담"
+    },
+    "apply_info": {
+      "channel": [
+        "전화",
+        "채팅"
+      ],
+      "docs": [],
+      "process": "즉시 이용",
+      "contact": "1393/112/119"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.9,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-MH-039",
+    "title": "지역사회서비스투자사업(심리지원/건강관리)",
+    "category": "심리/건강",
+    "provider": "대구북구/복지로",
+    "summary": "저소득·위기 청년의 심리·건강 서비스 바우처",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "북구"
+      ],
+      "income_rule": "중위소득 기준",
+      "status_tags": [
+        "저소득",
+        "심리위험"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "바우처",
+      "amount_or_detail": "심리·건강 서비스 이용권"
+    },
+    "apply_info": {
+      "channel": [
+        "주민센터"
+      ],
+      "docs": [
+        "소득서류"
+      ],
+      "process": "주민센터 신청→바우처 발급",
+      "contact": "북구청"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": "북구"
+    },
+    "priority_score": 0.78,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-MH-040",
+    "title": "건강보험료 경감/본인부담상한제(저소득)",
+    "category": "심리/건강",
+    "provider": "국민건강보험공단",
+    "summary": "저소득 청년의 의료비 부담 완화 제도",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "저소득/특례",
+      "status_tags": [
+        "저소득",
+        "건강위기"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "감면",
+      "amount_or_detail": "보험료·의료비 상한 경감"
+    },
+    "apply_info": {
+      "channel": [
+        "건보공단"
+      ],
+      "docs": [
+        "자격증빙"
+      ],
+      "process": "공단 신청/자동적용",
+      "contact": "건보공단"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.7,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-MH-041",
+    "title": "청년 국가건강검진/예방접종 지원(저소득 가점)",
+    "category": "심리/건강",
+    "provider": "보건복지부/질병청",
+    "summary": "청년 건강검진·예방접종(HPV 등) 지원",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "저소득 우선",
+      "status_tags": [
+        "저소득"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "의료서비스",
+      "amount_or_detail": "검진/예방접종 무료·감면"
+    },
+    "apply_info": {
+      "channel": [
+        "보건소",
+        "지정의료기관"
+      ],
+      "docs": [
+        "신분증"
+      ],
+      "process": "방문 접종/검진",
+      "contact": "북구보건소"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": "북구 보건소"
+    },
+    "priority_score": 0.6,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-FAM-042",
+    "title": "한부모가족 아동양육비/생활보조금",
+    "category": "자립/가족",
+    "provider": "여성가족부/복지로",
+    "summary": "저소득 한부모 청년의 양육비·생활비 지원",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "중위소득 기준",
+      "status_tags": [
+        "한부모",
+        "저소득"
+      ],
+      "other_rules": [
+        "자녀 양육"
+      ]
+    },
+    "benefit": {
+      "type": "현금",
+      "amount_or_detail": "월 양육비/보조금"
+    },
+    "apply_info": {
+      "channel": [
+        "복지로",
+        "주민센터"
+      ],
+      "docs": [
+        "가족관계증명",
+        "소득서류"
+      ],
+      "process": "신청→심사→지급",
+      "contact": "가족센터/주민센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.9,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-FAM-043",
+    "title": "가족돌봄청년 지원(상담·서비스 연계)",
+    "category": "자립/가족",
+    "provider": "보건복지부/지자체",
+    "summary": "가족을 돌보느라 학업·취업이 어려운 청년 지원",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "유형별",
+      "status_tags": [
+        "돌봄부담",
+        "저소득가능"
+      ],
+      "other_rules": [
+        "가족 돌봄 확인"
+      ]
+    },
+    "benefit": {
+      "type": "프로그램",
+      "amount_or_detail": "돌봄서비스·상담·휴식지원"
+    },
+    "apply_info": {
+      "channel": [
+        "주민센터",
+        "가족센터"
+      ],
+      "docs": [
+        "돌봄상황 증빙"
+      ],
+      "process": "상담→서비스 매칭",
+      "contact": "가족센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": "북구 가족센터"
+    },
+    "priority_score": 0.8,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-FAM-044",
+    "title": "가정폭력/학대 피해 청년 보호·자립 연계",
+    "category": "자립/가족",
+    "provider": "여성가족부/지자체",
+    "summary": "가정폭력·학대 피해 청년 긴급보호+주거/심리지원",
+    "eligibility": {
+      "age_min": 18,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "무관",
+      "status_tags": [
+        "가정밖청년",
+        "위기청년"
+      ],
+      "other_rules": [
+        "피해 확인"
+      ]
+    },
+    "benefit": {
+      "type": "보호/프로그램",
+      "amount_or_detail": "쉼터·법률·상담·주거연계"
+    },
+    "apply_info": {
+      "channel": [
+        "1366",
+        "쉼터"
+      ],
+      "docs": [
+        "피해상황"
+      ],
+      "process": "상담→보호→연계",
+      "contact": "대구여성긴급전화 1366"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": "대구"
+    },
+    "priority_score": 0.85,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-FAM-045",
+    "title": "가정밖 청소년·청년 자립지원(쉼터/자립수당)",
+    "category": "자립/가족",
+    "provider": "여성가족부",
+    "summary": "가정 밖에서 생활하는 청년의 주거·자립 지원",
+    "eligibility": {
+      "age_min": 16,
+      "age_max": 24,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "대상자",
+      "status_tags": [
+        "가정밖청년"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "현금/주거",
+      "amount_or_detail": "쉼터+자립수당"
+    },
+    "apply_info": {
+      "channel": [
+        "청소년쉼터"
+      ],
+      "docs": [
+        "상담"
+      ],
+      "process": "쉼터 등록→자립지원",
+      "contact": "대구 청소년쉼터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": "대구"
+    },
+    "priority_score": 0.8,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-FAM-046",
+    "title": "북구 가족센터 청년·한부모 상담/교육",
+    "category": "자립/가족",
+    "provider": "대구북구",
+    "summary": "한부모·가족관계·양육·정서 상담 및 교육",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구 북구"
+      ],
+      "income_rule": "무관",
+      "status_tags": [
+        "한부모",
+        "심리위험"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "프로그램",
+      "amount_or_detail": "상담/교육/돌봄연계"
+    },
+    "apply_info": {
+      "channel": [
+        "가족센터"
+      ],
+      "docs": [
+        "신청서"
+      ],
+      "process": "예약→상담/프로그램",
+      "contact": "북구 가족센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": "북구"
+    },
+    "priority_score": 0.7,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-FIN-047",
+    "title": "청년저축/금융교육(자립준비청년 포함)",
+    "category": "금융",
+    "provider": "대구광역시/복지로",
+    "summary": "저소득·자립준비 청년 금융역량/자산관리 교육",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "대상자/희망자",
+      "status_tags": [
+        "저소득",
+        "자립준비청년"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "교육",
+      "amount_or_detail": "금융/자산관리 교육"
+    },
+    "apply_info": {
+      "channel": [
+        "청년센터",
+        "복지로"
+      ],
+      "docs": [
+        "신청서"
+      ],
+      "process": "모집 신청→참여",
+      "contact": "대구청년센터"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.65,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-FIN-048",
+    "title": "청년 신용회복/채무조정 상담",
+    "category": "금융",
+    "provider": "신용회복위원회",
+    "summary": "연체/채무로 어려운 청년의 채무조정·상담",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "무관",
+      "status_tags": [
+        "금융위기"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "상담/조정",
+      "amount_or_detail": "채무조정/분할상환"
+    },
+    "apply_info": {
+      "channel": [
+        "신복위"
+      ],
+      "docs": [
+        "채무서류"
+      ],
+      "process": "상담→조정안 확정",
+      "contact": "신용회복위원회 대구"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": null
+    },
+    "priority_score": 0.7,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-ETC-049",
+    "title": "대구 청년 문화·교통·생활 할인(공공/제휴)",
+    "category": "지역자원",
+    "provider": "대구광역시",
+    "summary": "대구 청년 대상 문화/체육/교통 제휴 할인",
+    "eligibility": {
+      "age_min": 19,
+      "age_max": 39,
+      "residence": [
+        "대구"
+      ],
+      "income_rule": "무관",
+      "status_tags": [
+        "문화활동",
+        "고립완화"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "할인",
+      "amount_or_detail": "시설 이용료 감면"
+    },
+    "apply_info": {
+      "channel": [
+        "대구청년포털"
+      ],
+      "docs": [
+        "청년인증"
+      ],
+      "process": "제휴처 확인 후 이용",
+      "contact": "대구시"
+    },
+    "location": {
+      "lat": null,
+      "lng": null,
+      "radius_m": null,
+      "address_text": "대구 전역"
+    },
+    "priority_score": 0.55,
+    "last_updated": "2025-11-22"
+  },
+  {
+    "benefit_id": "DG-ETC-050",
+    "title": "산격종합사회복지관(원스톱 사례관리)",
+    "category": "지역자원",
+    "provider": "대구북구",
+    "summary": "산격동 취약청년 복지·주거·생계·일자리 연계 허브",
+    "eligibility": {
+      "age_min": 0,
+      "age_max": 99,
+      "residence": [
+        "산격동"
+      ],
+      "income_rule": "위기/취약",
+      "status_tags": [
+        "저소득",
+        "고립위험",
+        "주거취약",
+        "미취업"
+      ],
+      "other_rules": []
+    },
+    "benefit": {
+      "type": "프로그램",
+      "amount_or_detail": "사례관리+각종 자원연계"
+    },
+    "apply_info": {
+      "channel": [
+        "복지관 방문"
+      ],
+      "docs": [
+        "상담"
+      ],
+      "process": "초기상담→필요서비스 연계",
+      "contact": "산격종합사회복지관"
+    },
+    "location": {
+      "lat": 35.893,
+      "lng": 128.61,
+      "radius_m": 2500,
+      "address_text": "산격동"
+    },
+    "priority_score": 0.95,
+    "last_updated": "2025-11-22"
+  }
+]
