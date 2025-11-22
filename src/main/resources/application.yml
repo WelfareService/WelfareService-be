@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: welfare
+  datasource:
+    url: jdbc:mysql://localhost:3306/welfare?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: welfare
+    password: welfare_pw
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+    open-in-view: false
+
+openai:
+  api-key : yourId
+  model: gpt-5-mini
+  base-url: https://api.openai.com/v1
