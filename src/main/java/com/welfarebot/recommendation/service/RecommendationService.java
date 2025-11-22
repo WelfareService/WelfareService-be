@@ -12,8 +12,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RecommendationService {
@@ -44,6 +46,9 @@ public class RecommendationService {
 
             Benefit b = ob.get();
             double score = Optional.ofNullable(e.getValue()).orElse(0d);
+            if (isOutsideAgeRange(userOpt, b)) {
+                continue;
+            }
             score = applyBaseTagBoost(userOpt, b, score);
             recs.add(ChatResponse.RecommendationItem.builder()
                     .benefitId(b.getBenefit_id())
@@ -66,6 +71,27 @@ public class RecommendationService {
                 )
                 .recommendations(recs)
                 .build();
+    }
+
+    private boolean isOutsideAgeRange(Optional<User> userOpt, Benefit benefit) {
+        if (userOpt.isEmpty() || benefit.getEligibility() == null) {
+            return false;
+        }
+        Integer userAge = userOpt.get().getAge();
+        if (userAge == null) {
+            return false;
+        }
+        Benefit.Eligibility eligibility = benefit.getEligibility();
+        Integer min = eligibility.getAge_min();
+        Integer max = eligibility.getAge_max();
+        if ((min != null && userAge < min) || (max != null && userAge > max)) {
+            log.debug("[Eligibility] {} skipped due to age mismatch: userAge={}, required={}~{}",
+                    benefit.getBenefit_id(), userAge,
+                    min != null ? min : "-",
+                    max != null ? max : "-");
+            return true;
+        }
+        return false;
     }
 
     private double applyBaseTagBoost(Optional<User> userOpt, Benefit benefit, double score) {
