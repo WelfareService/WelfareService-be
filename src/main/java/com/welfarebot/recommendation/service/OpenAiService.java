@@ -1,13 +1,10 @@
 package com.welfarebot.recommendation.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.welfarebot.recommendation.dto.ConversationTurn;
 import com.welfarebot.recommendation.dto.GptMatchResponse;
-import com.welfarebot.recommendation.model.User;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -34,9 +31,9 @@ public class OpenAiService {
     @Value("${openai.base-url}")
     private String baseUrl;
 
-    public GptMatchResponse analyzeMessage(String userMessage, User user, List<ConversationTurn> history) {
+    public GptMatchResponse analyzeMessage(String userMessage, List<ConversationTurn> history) {
         String systemPrompt = loadPrompt("prompt_match_engine.txt");
-        List<Map<String, String>> messages = buildMessages(systemPrompt, user, history, userMessage);
+        List<Map<String, String>> messages = buildMessages(systemPrompt, history, userMessage);
 
         Map<String, Object> body = Map.of(
                 "model", model,
@@ -76,38 +73,11 @@ public class OpenAiService {
         }
     }
 
-    private String buildUserProfileBlock(User user) {
-        String name = (user != null && user.getName() != null && !user.getName().isBlank())
-                ? user.getName()
-                : "알 수 없음";
-        String age = (user != null && user.getAge() != null) ? user.getAge().toString() : "미입력";
-        String residence = (user != null && user.getResidence() != null && !user.getResidence().isBlank())
-                ? user.getResidence()
-                : "미입력";
-        List<String> tags = parseTags(user);
-        return """
-{
-  "name": %s,
-  "age": %s,
-  "residence": %s,
-  "baseTags": %s
-}
-이 정보는 이미 확인된 사실이다. assistantMessage에서 다시 묻지 않는다.
-""".formatted(
-                toJsonValue(name),
-                toJsonValue(age),
-                toJsonValue(residence),
-                toJsonValue(tags)
-        );
-    }
-
     private List<Map<String, String>> buildMessages(String systemPrompt,
-                                                    User user,
                                                     List<ConversationTurn> history,
                                                     String latestMessage) {
         List<Map<String, String>> messages = new ArrayList<>();
         messages.add(Map.of("role", "system", "content", systemPrompt));
-        messages.add(Map.of("role", "user", "content", "[USER PROFILE]\n" + buildUserProfileBlock(user)));
 
         if (history != null) {
             for (ConversationTurn turn : history) {
@@ -124,17 +94,6 @@ public class OpenAiService {
         return messages;
     }
 
-    private List<String> parseTags(User user) {
-        if (user == null || user.getBaseTags() == null) {
-            return List.of();
-        }
-        try {
-            return objectMapper.readValue(user.getBaseTags(), new TypeReference<List<String>>() {});
-        } catch (Exception e) {
-            return Collections.emptyList();
-        }
-    }
-
     private String normalizeRole(String role) {
         if (role == null) {
             return null;
@@ -145,16 +104,5 @@ public class OpenAiService {
             case "user" -> "user";
             default -> null;
         };
-    }
-
-    private String toJsonValue(Object value) {
-        try {
-            return objectMapper.writeValueAsString(value);
-        } catch (Exception e) {
-            if (value == null) {
-                return "null";
-            }
-            return "\"" + value.toString().replace("\"", "\\\"") + "\"";
-        }
     }
 }

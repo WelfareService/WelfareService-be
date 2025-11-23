@@ -30,7 +30,7 @@ public class RejectController {
                     schema = @Schema(implementation = RejectRequest.class),
                     examples = @ExampleObject(value = "{\\n  \"benefitId\": \"DG-HOU-001\"\\n}"))),
             responses = @ApiResponse(responseCode = "200", description = "거절 반영"))
-    public void reject(@PathVariable Long userId, @RequestBody RejectRequest request) {
+    public void reject(@PathVariable("userId") Long userId, @RequestBody RejectRequest request) {
         rejectService.reject(userId, request.getBenefitId());
     }
 }

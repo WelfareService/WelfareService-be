@@ -5,6 +5,7 @@ import com.welfarebot.recommendation.config.RecommendationPolicyLoader;
 import com.welfarebot.recommendation.config.RecommendationPolicyLoader.BoostRule;
 import com.welfarebot.recommendation.dto.ChatRequest;
 import com.welfarebot.recommendation.dto.ChatResponse;
+import com.welfarebot.recommendation.dto.ConversationTurn;
 import com.welfarebot.recommendation.dto.GptMatchResponse;
 import com.welfarebot.recommendation.model.Benefit;
 import com.welfarebot.recommendation.model.BenefitMatchLog;
@@ -65,21 +66,28 @@ public class RecommendationService {
     public RecommendationResult chatRecommend(ChatRequest request, User user, RecommendationSessionState sessionState) {
         List<String> userBaseTags = userService.parseTags(user);
         List<String> baseTags = normalizeBaseTags(userBaseTags);
+        boolean reRecommendTrigger = isReRecommendTrigger(request.getMessage());
+        List<ConversationTurn> historyForModel = reRecommendTrigger ? List.of() : request.getHistory();
 
-        GptMatchResponse gptResponse = openAiService.analyzeMessage(request.getMessage(), user, request.getHistory());
+        GptMatchResponse gptResponse = openAiService.analyzeMessage(request.getMessage(), historyForModel);
         SignalNormalizationResult signalResult = signalOntologyService.normalizeSignals(gptResponse.getSignals());
         List<String> canonicalSignals = signalResult.canonicalSignals();
-        boolean insufficientInfo = Boolean.TRUE.equals(gptResponse.getInsufficientInfo());
         RiskLevel riskLevel = determineRiskLevel(canonicalSignals);
-
-        MinimalConditionResult mcResult = evaluateMinimalCondition(insufficientInfo, canonicalSignals,
-                signalResult.hasUnknownOnly());
-
         boolean alreadyIssued = isAlreadyIssued(user, sessionState);
-        boolean forceOverride = alreadyIssued && isReRecommendTrigger(request.getMessage());
+        boolean forceOverride = alreadyIssued && reRecommendTrigger;
+
+        if (Boolean.TRUE.equals(gptResponse.getInsufficientInfo())) {
+            List<String> reasons = List.of("INSUFFICIENT_INFO");
+            saveDecisionLog(user, DECISION_SKIPPED_MC, reasons, canonicalSignals, riskLevel);
+            ChatResponse response = buildResponse(gptResponse.getAssistantMessage(), List.of(), riskLevel, user,
+                    userBaseTags, alreadyIssued);
+            return new RecommendationResult(response, false, null);
+        }
+
+        MinimalConditionResult mcResult = evaluateMinimalCondition(canonicalSignals);
 
         if (!mcResult.passed()) {
-            saveDecisionLog(user != null ? user.getId() : null, DECISION_SKIPPED_MC, mcResult.reasons(), canonicalSignals, riskLevel);
+            saveDecisionLog(user, DECISION_SKIPPED_MC, mcResult.reasons(), canonicalSignals, riskLevel);
             ChatResponse response = buildResponse(gptResponse.getAssistantMessage(), List.of(), riskLevel, user,
                     userBaseTags, alreadyIssued);
             return new RecommendationResult(response, false, null);
@@ -87,7 +95,7 @@ public class RecommendationService {
 
         if (alreadyIssued && !forceOverride) {
             List<String> reasons = List.of("ALREADY_ISSUED");
-            saveDecisionLog(user != null ? user.getId() : null, DECISION_SKIPPED_ALREADY_ISSUED, reasons, canonicalSignals, riskLevel);
+            saveDecisionLog(user, DECISION_SKIPPED_ALREADY_ISSUED, reasons, canonicalSignals, riskLevel);
             ChatResponse response = buildResponse(gptResponse.getAssistantMessage(), List.of(), riskLevel, user,
                     userBaseTags, true);
             return new RecommendationResult(response, false, null);
@@ -157,18 +165,14 @@ public class RecommendationService {
                 .anyMatch(normalized::contains);
     }
 
-    private MinimalConditionResult evaluateMinimalCondition(boolean insufficientInfo,
-                                                            List<String> canonicalSignals,
-                                                            boolean unknownOnly) {
+    private MinimalConditionResult evaluateMinimalCondition(List<String> canonicalSignals) {
         List<String> reasons = new ArrayList<>();
-        if (insufficientInfo) {
-            reasons.add("INSUFFICIENT_INFO");
+        boolean hasSignals = canonicalSignals != null && !canonicalSignals.isEmpty();
+        if (!hasSignals) {
+            reasons.add("NO_SIGNAL");
         }
-        if (!signalOntologyService.containsMinimalConditionSignal(canonicalSignals)) {
+        if (hasSignals && !signalOntologyService.containsMinimalConditionSignal(canonicalSignals)) {
             reasons.add("NO_CRITICAL_SIGNAL");
-        }
-        if (unknownOnly) {
-            reasons.add("UNKNOWN_SIGNAL");
         }
         return new MinimalConditionResult(reasons.isEmpty(), List.copyOf(reasons));
     }
@@ -329,7 +333,7 @@ public class RecommendationService {
                               ScoredResult result) {
         try {
             BenefitMatchLog entity = new BenefitMatchLog();
-            entity.setUserId(user != null ? user.getId() : null);
+            applyUserContext(entity, user);
             entity.setBenefitId(result.benefit().getBenefit_id());
             entity.setBaseScore(result.baseScore());
             entity.setBoostedScore(result.finalScore());
@@ -346,14 +350,14 @@ public class RecommendationService {
         }
     }
 
-    private void saveDecisionLog(Long userId,
+    private void saveDecisionLog(User user,
                                  String decisionType,
                                  List<String> reasons,
                                  List<String> normalizedSignals,
                                  RiskLevel riskLevel) {
         try {
             BenefitMatchLog entity = new BenefitMatchLog();
-            entity.setUserId(userId);
+            applyUserContext(entity, user);
             entity.setDecisionType(decisionType);
             entity.setMcFailReasons(toJson(reasons));
             entity.setAppliedBoostTags("[]");
@@ -364,6 +368,19 @@ public class RecommendationService {
             benefitMatchLogRepository.save(entity);
         } catch (Exception e) {
             log.warn("[Recommendation] Failed to save decision log", e);
+        }
+    }
+
+    private void applyUserContext(BenefitMatchLog entity, User user) {
+        if (entity == null) {
+            return;
+        }
+        if (user == null) {
+            entity.setUser(null);
+            entity.setUserId(null);
+        } else {
+            entity.setUser(user);
+            entity.setUserId(user.getId());
         }
     }
 
