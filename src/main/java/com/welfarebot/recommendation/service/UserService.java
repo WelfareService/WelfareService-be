@@ -3,13 +3,14 @@ package com.welfarebot.recommendation.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.welfarebot.recommendation.model.User;
 import com.welfarebot.recommendation.repository.UserRepository;
-import java.time.LocalDateTime;
 import com.fasterxml.jackson.core.type.TypeReference;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +27,8 @@ public class UserService {
         } catch (Exception e) {
             user.setBaseTags("[]");
         }
+        user.setRecommendationIssued(Boolean.FALSE);
+        user.setLastRecommendationAt(null);
         user.setCreatedAt(LocalDateTime.now());
         User saved = userRepository.save(user);
         preRecommendationService.createInitialPool(saved, tags);
@@ -55,5 +58,15 @@ public class UserService {
         } catch (Exception e) {
             return Collections.emptyList();
         }
+    }
+
+    @Transactional
+    public void markRecommendationIssued(User user) {
+        if (user == null || user.getId() == null) {
+            return;
+        }
+        user.setRecommendationIssued(Boolean.TRUE);
+        user.setLastRecommendationAt(LocalDateTime.now());
+        userRepository.save(user);
     }
 }

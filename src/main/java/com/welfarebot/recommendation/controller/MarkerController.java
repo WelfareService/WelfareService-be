@@ -3,6 +3,9 @@ package com.welfarebot.recommendation.controller;
 import com.welfarebot.recommendation.dto.MarkerResponse;
 import com.welfarebot.recommendation.service.BenefitCatalogService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +22,9 @@ public class MarkerController {
     private final BenefitCatalogService catalogService;
 
     @GetMapping("/locations")
-    @Operation(summary = "전체 혜택 위치 조회", description = "위치 정보가 있는 혜택을 카카오맵 마커 형식으로 반환합니다.")
+    @Operation(summary = "전체 혜택 위치 조회",
+            description = "위치 정보가 있는 혜택을 카카오맵 마커 형식으로 반환합니다.",
+            responses = @ApiResponse(responseCode = "200", description = "마커 응답", content = @Content(schema = @Schema(implementation = MarkerResponse.class))))
     public MarkerResponse getLocations() {
         List<MarkerResponse.Marker> markers = catalogService.getAll().stream()
                 .filter(b -> b.getLocation() != null)

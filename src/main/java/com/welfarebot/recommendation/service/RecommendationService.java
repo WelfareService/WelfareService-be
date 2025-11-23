@@ -1,6 +1,9 @@
 package com.welfarebot.recommendation.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.welfarebot.recommendation.config.RecommendationPolicyLoader;
+import com.welfarebot.recommendation.config.RecommendationPolicyLoader.BoostRule;
+import com.welfarebot.recommendation.dto.ChatRequest;
 import com.welfarebot.recommendation.dto.ChatResponse;
 import com.welfarebot.recommendation.dto.GptMatchResponse;
 import com.welfarebot.recommendation.model.Benefit;
@@ -8,9 +11,12 @@ import com.welfarebot.recommendation.model.BenefitMatchLog;
 import com.welfarebot.recommendation.model.User;
 import com.welfarebot.recommendation.model.UserPreRecommendation;
 import com.welfarebot.recommendation.repository.BenefitMatchLogRepository;
+import com.welfarebot.recommendation.service.RecommendationSessionTracker.RecommendationSessionState;
+import com.welfarebot.recommendation.service.SignalOntologyService.SignalNormalizationResult;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -27,21 +33,10 @@ import org.springframework.stereotype.Service;
 public class RecommendationService {
 
     private static final int RECOMMENDATION_COUNT = 3;
-    private static final double BASE_TAG_BOOST_AMOUNT = 0.15;
-    private static final double SIGNAL_BOOST_AMOUNT = 0.05;
-
-    private static final Map<String, List<String>> BASE_TAG_CATEGORY_KEYWORDS = Map.of(
-            "미취업", List.of("일자리"),
-            "저소득", List.of("주거", "생계", "지역자원"),
-            "심리위험", List.of("심리", "정신", "건강", "상담")
-    );
-
-    private static final Map<String, List<String>> SIGNAL_CATEGORY_KEYWORDS = Map.of(
-            "주거불안", List.of("주거"),
-            "미취업", List.of("일자리"),
-            "심리위험", List.of("심리", "정신", "건강", "상담"),
-            "부채", List.of("금융", "대출", "보증", "부채")
-    );
+    private static final String DECISION_MC_SKIPPED = "MC_SKIPPED";
+    private static final String DECISION_TOP3 = "TOP3_ISSUED";
+    private static final String DECISION_OVERRIDE = "RECOMMENDATION_OVERRIDE";
+    private static final String DECISION_UNKNOWN = "UNKNOWN_SIGNAL";
 
     private final OpenAiService openAiService;
     private final BenefitCatalogService catalogService;
@@ -50,34 +45,41 @@ public class RecommendationService {
     private final RejectService rejectService;
     private final BenefitMatchLogRepository benefitMatchLogRepository;
     private final ObjectMapper objectMapper;
+    private final RecommendationPolicyLoader policyLoader;
+    private final SignalOntologyService signalOntologyService;
 
-    public ChatResponse chatRecommend(Long userId, String message) {
-        User user = (userId != null) ? userService.find(userId).orElse(null) : null;
-        List<String> baseTags = normalizeTags(user != null ? userService.parseTags(user) : List.of());
+    public RecommendationResult chatRecommend(ChatRequest request, RecommendationSessionState sessionState) {
+        User user = (request.getUserId() != null) ? userService.find(request.getUserId()).orElse(null) : null;
+        List<String> baseTags = normalizeBaseTags(user != null ? userService.parseTags(user) : List.of());
 
-        GptMatchResponse gpt = openAiService.analyzeMessage(message, user);
-        List<String> signals = normalizeTags(normalizeSignals(gpt.getSignals()));
-        boolean insufficientInfo = Boolean.TRUE.equals(gpt.getInsufficientInfo());
-
-        if (!isMinimalConditionSatisfied(user, baseTags, signals, insufficientInfo)) {
-            log.info("[MC] insufficient info or no signals → recommendations skipped");
-            return ChatResponse.builder()
-                    .assistantMessage(determineAssistantMessage(gpt.getAssistantMessage()))
-                    .recommendations(List.of())
-                    .build();
-        }
-        log.info("[MC] content-level minimal condition satisfied → generating recommendations");
+        GptMatchResponse gptResponse = openAiService.analyzeMessage(request.getMessage(), user, request.getHistory());
+        SignalNormalizationResult signalResult = signalOntologyService.normalizeSignals(gptResponse.getSignals());
+        List<String> canonicalSignals = signalResult.canonicalSignals();
+        boolean insufficientInfo = Boolean.TRUE.equals(gptResponse.getInsufficientInfo());
 
         List<UserPreRecommendation> pool = preRecommendationService.getPool(user);
-        if (pool.isEmpty()) {
-            log.warn("[Recommendation] Pre recommendation pool is empty. Falling back to catalog");
-            pool = preRecommendationService.getPool(null);
+        boolean poolAvailable = !pool.isEmpty();
+
+        boolean alreadyIssued = isAlreadyIssued(user, sessionState);
+        boolean forceOverride = alreadyIssued && isReRecommendTrigger(request.getMessage());
+
+        MinimalConditionResult mcResult = evaluateMinimalCondition(insufficientInfo, canonicalSignals, poolAvailable,
+                alreadyIssued, forceOverride, signalResult.hasUnknownOnly());
+        RiskLevel riskLevel = determineRiskLevel(canonicalSignals, mcResult);
+
+        if (!mcResult.passed()) {
+            String decisionType = signalResult.hasUnknownOnly() ? DECISION_UNKNOWN : DECISION_MC_SKIPPED;
+            saveDecisionLog(user != null ? user.getId() : null, decisionType, mcResult.reasons(), canonicalSignals, riskLevel);
+            return new RecommendationResult(ChatResponse.builder()
+                    .assistantMessage(determineAssistantMessage(gptResponse.getAssistantMessage()))
+                    .recommendations(List.of())
+                    .riskLevel(riskLevel.name())
+                    .build(), false, null);
         }
 
-        Set<String> rejected = rejectService.getRejectedBenefitIds(userId);
-
+        Set<String> rejectedIds = rejectService.getRejectedBenefitIds(request.getUserId());
         List<ScoredResult> scoredResults = pool.stream()
-                .map(entry -> scoreEntry(entry, baseTags, signals, rejected))
+                .map(entry -> scoreEntry(entry, baseTags, canonicalSignals, rejectedIds))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .sorted(Comparator.comparingDouble(ScoredResult::finalScore).reversed())
@@ -85,7 +87,7 @@ public class RecommendationService {
                 .collect(Collectors.toList());
 
         if (scoredResults.isEmpty()) {
-            log.warn("[Recommendation] No recommendations after scoring. Using fallback.");
+            log.warn("[Recommendation] No candidates remained after scoring. Fallback to catalog results.");
             scoredResults = catalogService.getAll().stream()
                     .limit(RECOMMENDATION_COUNT)
                     .map(benefit -> new ScoredResult(
@@ -99,18 +101,86 @@ public class RecommendationService {
                     .collect(Collectors.toList());
         }
 
-        if (userId != null) {
-            scoredResults.forEach(result -> saveMatchLog(userId, result));
+        boolean issued = !scoredResults.isEmpty();
+        LocalDateTime issuedAt = issued ? LocalDateTime.now() : null;
+        if (issued && user != null) {
+            userService.markRecommendationIssued(user);
         }
+
+        String decisionType = forceOverride ? DECISION_OVERRIDE : DECISION_TOP3;
+        List<String> logReasons = reasonsWithOverride(mcResult);
+        scoredResults.forEach(result -> saveMatchLog(user, decisionType, logReasons, canonicalSignals, riskLevel,
+                result));
 
         List<ChatResponse.RecommendationItem> items = scoredResults.stream()
                 .map(ScoredResult::item)
                 .collect(Collectors.toList());
 
-        return ChatResponse.builder()
-                .assistantMessage(determineAssistantMessage(gpt.getAssistantMessage()))
+        ChatResponse response = ChatResponse.builder()
+                .assistantMessage(determineAssistantMessage(gptResponse.getAssistantMessage()))
                 .recommendations(items)
+                .riskLevel(riskLevel.name())
                 .build();
+
+        return new RecommendationResult(response, issued, issuedAt);
+    }
+
+    private boolean isAlreadyIssued(User user, RecommendationSessionState sessionState) {
+        if (user != null && Boolean.TRUE.equals(user.getRecommendationIssued())) {
+            return true;
+        }
+        return sessionState != null && sessionState.issued();
+    }
+
+    private boolean isReRecommendTrigger(String message) {
+        if (message == null || message.isBlank()) {
+            return false;
+        }
+        String normalized = normalizeForSearch(message);
+        return policyLoader.getReRecommendTriggers().stream()
+                .map(this::normalizeForSearch)
+                .anyMatch(normalized::contains);
+    }
+
+    private MinimalConditionResult evaluateMinimalCondition(boolean insufficientInfo,
+                                                            List<String> canonicalSignals,
+                                                            boolean poolAvailable,
+                                                            boolean alreadyIssued,
+                                                            boolean forceOverride,
+                                                            boolean unknownOnly) {
+        List<String> reasons = new ArrayList<>();
+        if (insufficientInfo) {
+            reasons.add("INSUFFICIENT_INFO");
+        }
+        if (!signalOntologyService.containsMinimalConditionSignal(canonicalSignals)) {
+            reasons.add("NO_MINIMAL_SIGNAL");
+        }
+        if (!poolAvailable) {
+            reasons.add("NO_PREPOOL");
+        }
+        if (alreadyIssued && !forceOverride) {
+            reasons.add("ALREADY_ISSUED");
+        }
+        if (unknownOnly) {
+            reasons.add("UNKNOWN_SIGNAL");
+        }
+        return new MinimalConditionResult(reasons.isEmpty(), List.copyOf(reasons), forceOverride);
+    }
+
+    private RiskLevel determineRiskLevel(List<String> signals, MinimalConditionResult mcResult) {
+        if (signals == null || signals.isEmpty()) {
+            return RiskLevel.NONE;
+        }
+        if (!mcResult.passed()) {
+            return RiskLevel.LOW;
+        }
+        Set<String> signalSet = signals.stream().collect(Collectors.toSet());
+        if ((signalSet.contains("주거불안") && signalSet.contains("미취업"))
+                || (signalSet.contains("심리위험") && signalSet.contains("생계위험"))
+                || (signalSet.contains("돌봄공백") && signalSet.contains("생계위험"))) {
+            return RiskLevel.HIGH;
+        }
+        return RiskLevel.MEDIUM;
     }
 
     private Optional<ScoredResult> scoreEntry(UserPreRecommendation entry,
@@ -128,16 +198,62 @@ public class RecommendationService {
             return Optional.empty();
         }
         double baseScore = Optional.ofNullable(entry.getBaseScore()).orElse(0.5);
-        double score = baseScore;
-        List<BoostLog> tagLogs = new ArrayList<>();
-        List<BoostLog> signalLogs = new ArrayList<>();
+        Set<String> categories = policyLoader.resolveCategories(benefit.getCategory());
+        BoostAccumulator accumulator = new BoostAccumulator(policyLoader.getBoostCap());
+        List<BoostLog> baseTagLogs = applyBaseTagBoost(baseTags, categories, accumulator);
+        List<BoostLog> signalLogs = applySignalBoost(signals, categories, accumulator);
 
-        score = applyBaseTagBoost(score, baseTags, benefit, tagLogs);
-        score = applySignalBoost(score, signals, benefit, signalLogs);
-        score = Math.min(score, 1.0);
+        double finalScore = Math.min(baseScore + accumulator.totalBoost(), 1.0);
+        ChatResponse.RecommendationItem item = buildItem(benefit, finalScore);
+        return Optional.of(new ScoredResult(benefit, baseScore, finalScore, baseTagLogs, signalLogs, item));
+    }
 
-        ChatResponse.RecommendationItem item = buildItem(benefit, score);
-        return Optional.of(new ScoredResult(benefit, baseScore, score, tagLogs, signalLogs, item));
+    private List<BoostLog> applyBaseTagBoost(List<String> baseTags,
+                                             Set<String> categories,
+                                             BoostAccumulator accumulator) {
+        if (baseTags == null || baseTags.isEmpty() || categories.isEmpty()) {
+            return List.of();
+        }
+        Map<String, BoostRule> rules = policyLoader.getBaseTagBoostRules();
+        List<BoostLog> logs = new ArrayList<>();
+        for (String tag : baseTags) {
+            BoostRule rule = rules.get(tag);
+            if (rule == null) {
+                continue;
+            }
+            boolean match = rule.getCategories().stream().anyMatch(categories::contains);
+            if (match) {
+                double applied = accumulator.apply(rule.getBoost());
+                if (applied > 0) {
+                    logs.add(new BoostLog("baseTag:" + tag, applied));
+                }
+            }
+        }
+        return logs;
+    }
+
+    private List<BoostLog> applySignalBoost(List<String> signals,
+                                            Set<String> categories,
+                                            BoostAccumulator accumulator) {
+        if (signals == null || signals.isEmpty() || categories.isEmpty()) {
+            return List.of();
+        }
+        Map<String, BoostRule> rules = policyLoader.getSignalBoostRules();
+        List<BoostLog> logs = new ArrayList<>();
+        for (String signal : signals) {
+            BoostRule rule = rules.get(signal);
+            if (rule == null) {
+                continue;
+            }
+            boolean match = rule.getCategories().stream().anyMatch(categories::contains);
+            if (match) {
+                double applied = accumulator.apply(rule.getBoost());
+                if (applied > 0) {
+                    logs.add(new BoostLog("signal:" + signal, applied));
+                }
+            }
+        }
+        return logs;
     }
 
     private ChatResponse.RecommendationItem buildItem(Benefit benefit, double score) {
@@ -154,94 +270,22 @@ public class RecommendationService {
                 .build();
     }
 
-    private double applyBaseTagBoost(double score, List<String> baseTags, Benefit benefit, List<BoostLog> logs) {
-        if (baseTags.isEmpty() || benefit.getCategory() == null) {
-            return score;
-        }
-        String category = benefit.getCategory().toLowerCase(Locale.ROOT);
-        double boosted = score;
-
-        for (String tag : baseTags) {
-            List<String> keywords = BASE_TAG_CATEGORY_KEYWORDS.get(tag);
-            if (keywords == null) {
-                continue;
-            }
-            boolean match = keywords.stream().anyMatch(category::contains);
-            if (match) {
-                boosted += BASE_TAG_BOOST_AMOUNT;
-                logs.add(new BoostLog("baseTag:" + tag, BASE_TAG_BOOST_AMOUNT));
-                log.info("[Boost] baseTags={}, benefit={}, +{} 적용됨", tag, benefit.getBenefit_id(), BASE_TAG_BOOST_AMOUNT);
-            }
-        }
-        return boosted;
-    }
-
-    private double applySignalBoost(double score, List<String> signals, Benefit benefit, List<BoostLog> logs) {
-        if (signals.isEmpty() || benefit.getCategory() == null) {
-            return score;
-        }
-        String category = benefit.getCategory().toLowerCase(Locale.ROOT);
-        double boosted = score;
-
-        for (String signal : signals) {
-            List<String> keywords = SIGNAL_CATEGORY_KEYWORDS.get(signal);
-            if (keywords == null) {
-                continue;
-            }
-            boolean match = keywords.stream().anyMatch(category::contains);
-            if (match) {
-                boosted += SIGNAL_BOOST_AMOUNT;
-                logs.add(new BoostLog("signal:" + signal, SIGNAL_BOOST_AMOUNT));
-                log.info("[Boost] signal={}, benefit={}, +{} 적용됨", signal, benefit.getBenefit_id(), SIGNAL_BOOST_AMOUNT);
-            }
-        }
-        return boosted;
-    }
-
-    private List<String> normalizeSignals(List<String> signals) {
-        if (signals == null) {
+    private List<String> normalizeBaseTags(List<String> tags) {
+        if (tags == null || tags.isEmpty()) {
             return List.of();
         }
-        return signals;
-    }
-
-    private List<String> normalizeTags(List<String> source) {
-        if (source == null) {
-            return List.of();
-        }
-        return source.stream()
+        LinkedHashSet<String> normalized = tags.stream()
                 .filter(tag -> tag != null && !tag.isBlank())
                 .map(tag -> tag.toLowerCase(Locale.ROOT))
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+        return List.copyOf(normalized);
     }
 
-    private boolean isMinimalConditionSatisfied(User user, List<String> baseTags, List<String> signals, boolean insufficientInfo) {
-        if (insufficientInfo) {
-            return false;
+    private String normalizeForSearch(String value) {
+        if (value == null) {
+            return "";
         }
-        if (signals == null || signals.isEmpty()) {
-            return false;
-        }
-        if (baseTags == null || baseTags.isEmpty()) {
-            if (user != null && user.getBaseTags() != null && !user.getBaseTags().isBlank()) {
-                log.warn("[MC] baseTags JSON 존재하지만 파싱 결과가 비어 있습니다. raw={}", user.getBaseTags());
-            }
-            return false;
-        }
-        return true;
-    }
-
-    private boolean isMinimalConditionSatisfied(List<String> baseTags, List<String> signals, boolean insufficientInfo) {
-        if (insufficientInfo) {
-            return false;
-        }
-        if (signals == null || signals.isEmpty()) {
-            return false;
-        }
-        if (baseTags == null || baseTags.isEmpty()) {
-            return false;
-        }
-        return true;
+        return value.toLowerCase(Locale.ROOT).replaceAll("\\s+", "");
     }
 
     private String determineAssistantMessage(String message) {
@@ -251,22 +295,49 @@ public class RecommendationService {
         return message;
     }
 
-    private void saveMatchLog(Long userId, ScoredResult result) {
-        if (userId == null) {
-            return;
-        }
+    private void saveMatchLog(User user,
+                              String decisionType,
+                              List<String> mcFailReasons,
+                              List<String> normalizedSignals,
+                              RiskLevel riskLevel,
+                              ScoredResult result) {
         try {
-            BenefitMatchLog logEntity = new BenefitMatchLog();
-            logEntity.setUserId(userId);
-            logEntity.setBenefitId(result.benefit().getBenefit_id());
-            logEntity.setBaseScore(result.baseScore());
-            logEntity.setBoostedScore(result.finalScore());
-            logEntity.setAppliedBoostTags(toJson(result.tagBoostLogs()));
-            logEntity.setAppliedSignals(toJson(result.signalBoostLogs()));
-            logEntity.setCreatedAt(LocalDateTime.now());
-            benefitMatchLogRepository.save(logEntity);
+            BenefitMatchLog entity = new BenefitMatchLog();
+            entity.setUserId(user != null ? user.getId() : null);
+            entity.setBenefitId(result.benefit().getBenefit_id());
+            entity.setBaseScore(result.baseScore());
+            entity.setBoostedScore(result.finalScore());
+            entity.setAppliedBoostTags(toJson(result.tagBoostLogs()));
+            entity.setAppliedSignals(toJson(result.signalBoostLogs()));
+            entity.setDecisionType(decisionType);
+            entity.setMcFailReasons(toJson(mcFailReasons));
+            entity.setRiskLevel(riskLevel.name());
+            entity.setNormalizedSignals(toJson(normalizedSignals));
+            entity.setCreatedAt(LocalDateTime.now());
+            benefitMatchLogRepository.save(entity);
         } catch (Exception e) {
             log.warn("[Recommendation] Failed to save match log", e);
+        }
+    }
+
+    private void saveDecisionLog(Long userId,
+                                 String decisionType,
+                                 List<String> reasons,
+                                 List<String> normalizedSignals,
+                                 RiskLevel riskLevel) {
+        try {
+            BenefitMatchLog entity = new BenefitMatchLog();
+            entity.setUserId(userId);
+            entity.setDecisionType(decisionType);
+            entity.setMcFailReasons(toJson(reasons));
+            entity.setAppliedBoostTags("[]");
+            entity.setAppliedSignals("[]");
+            entity.setRiskLevel(riskLevel.name());
+            entity.setNormalizedSignals(toJson(normalizedSignals));
+            entity.setCreatedAt(LocalDateTime.now());
+            benefitMatchLogRepository.save(entity);
+        } catch (Exception e) {
+            log.warn("[Recommendation] Failed to save decision log", e);
         }
     }
 
@@ -274,7 +345,6 @@ public class RecommendationService {
         try {
             return objectMapper.writeValueAsString(value);
         } catch (Exception e) {
-            log.warn("[Recommendation] JSON 직렬화 실패", e);
             return "[]";
         }
     }
@@ -290,5 +360,51 @@ public class RecommendationService {
     }
 
     private record BoostLog(String type, double amount) {
+    }
+
+    private record MinimalConditionResult(boolean passed, List<String> reasons, boolean forcedOverride) {
+    }
+
+    private List<String> reasonsWithOverride(MinimalConditionResult mcResult) {
+        if (!mcResult.forcedOverride()) {
+            return mcResult.reasons();
+        }
+        List<String> augmented = new ArrayList<>();
+        augmented.add("RE_REQUEST_TRIGGER");
+        augmented.addAll(mcResult.reasons());
+        return List.copyOf(augmented);
+    }
+
+    public record RecommendationResult(ChatResponse response, boolean recommendationIssued, LocalDateTime issuedAt) {
+    }
+
+    private static class BoostAccumulator {
+        private final double cap;
+        private double consumed = 0.0;
+
+        private BoostAccumulator(double cap) {
+            this.cap = cap;
+        }
+
+        double apply(double amount) {
+            if (amount <= 0 || consumed >= cap) {
+                return 0;
+            }
+            double remaining = cap - consumed;
+            double applied = Math.min(amount, remaining);
+            consumed += applied;
+            return applied;
+        }
+
+        double totalBoost() {
+            return consumed;
+        }
+    }
+
+    private enum RiskLevel {
+        HIGH,
+        MEDIUM,
+        LOW,
+        NONE
     }
 }

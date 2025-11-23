@@ -1,0 +1,29 @@
+reRecommendTriggers:
+  - 다시 추천
+  - 새로 추천
+  - 재추천
+  - 재계산
+  - 다시 보여줘
+boostCap: 0.2
+baseTagBoost:
+  저소득:
+    categories: ["주거", "생계"]
+    boost: 0.15
+  미취업:
+    categories: ["일자리"]
+    boost: 0.15
+signalBoost:
+  주거불안:
+    categories: ["주거"]
+    boost: 0.05
+  미취업:
+    categories: ["일자리"]
+    boost: 0.05
+  심리위험:
+    categories: ["심리"]
+    boost: 0.05
+categoryKeywords:
+  주거: ["주거", "임대", "월세", "보증금"]
+  일자리: ["일자리", "취업", "채용", "구직"]
+  심리: ["상담", "심리", "정신건강"]
+  생계: ["생계", "생활", "생활비", "긴급"]

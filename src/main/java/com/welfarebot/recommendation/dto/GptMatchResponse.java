@@ -1,13 +1,14 @@
 package com.welfarebot.recommendation.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import java.util.Map;
 import lombok.Data;
 
 @Data
 public class GptMatchResponse {
     private String assistantMessage;
     private List<String> signals;
-    private Map<String, Double> scores;
+
+    @JsonProperty("insufficient_info")
     private Boolean insufficientInfo;
 }

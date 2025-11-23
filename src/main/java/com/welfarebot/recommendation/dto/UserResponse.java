@@ -1,6 +1,7 @@
 package com.welfarebot.recommendation.dto;
 
 import java.util.List;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,4 +13,6 @@ public class UserResponse {
     private Integer age;
     private String residence;
     private List<String> baseTags;
+    private Boolean recommendationIssued;
+    private LocalDateTime lastRecommendationAt;
 }

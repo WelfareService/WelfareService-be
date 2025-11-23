@@ -23,5 +23,9 @@ public class User {
     @Column(columnDefinition = "JSON")
     private String baseTags;
 
+    private Boolean recommendationIssued = Boolean.FALSE;
+
+    private LocalDateTime lastRecommendationAt;
+
     private LocalDateTime createdAt;
 }

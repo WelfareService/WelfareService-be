@@ -35,5 +35,17 @@ public class BenefitMatchLog {
     @Column(columnDefinition = "TEXT")
     private String appliedSignals;
 
+    @Column(length = 30)
+    private String decisionType;
+
+    @Column(columnDefinition = "TEXT")
+    private String mcFailReasons;
+
+    @Column(columnDefinition = "TEXT")
+    private String normalizedSignals;
+
+    @Column(length = 20)
+    private String riskLevel;
+
     private LocalDateTime createdAt;
 }

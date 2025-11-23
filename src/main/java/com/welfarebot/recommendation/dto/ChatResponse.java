@@ -9,6 +9,7 @@ import lombok.Data;
 public class ChatResponse {
     private String assistantMessage;
     private List<RecommendationItem> recommendations;
+    private String riskLevel;
 
     @Data
     @Builder
