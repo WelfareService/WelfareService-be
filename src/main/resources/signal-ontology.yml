@@ -1,79 +1,79 @@
 minimalConditionSignals:
-  - 주거불안
-  - 미취업
-  - 부채
-  - 체납
-  - 건강위험
-  - 의료위험
-  - 돌봄공백
+  - housing_stress
+  - unemployment
+  - debt_risk
+  - arrears
+  - health_risk
+  - medical_expense
+  - care_gap
 
 canonicalSignals:
-  주거불안:
-    - "월세 밀림"
-    - "월세 연체"
-    - "보증금 걱정"
-    - "보증금 문제가 있어요"
-    - "전세 보증금 불안"
-    - "전세금 걱정"
-    - "집을 잃을까 걱정돼요"
-    - "주거비 체납"
+  housing_stress:
+    - "late rent"
+    - "rent overdue"
+    - "deposit issues"
+    - "worry about deposit"
+    - "jeonse deposit anxiety"
+    - "jeonse deposit problem"
+    - "afraid of losing my home"
+    - "housing bill arrears"
 
-  미취업:
-    - "미취업"
-    - "일자리 없음"
-    - "일 못 구함"
-    - "취업 실패"
-    - "백수예요"
-    - "일할 곳이 없어요"
+  unemployment:
+    - "unemployed"
+    - "no job"
+    - "can't find a job"
+    - "failed job search"
+    - "jobless"
+    - "nowhere to work"
 
-  저소득:
-    - "생활비 부담"
-    - "돈이 부족해요"
-    - "수입이 적어요"
-    - "생활이 빠듯해요"
-    - "소득이 부족해요"
+  low_income:
+    - "living expenses burden"
+    - "not enough money"
+    - "low income"
+    - "tight finances"
+    - "insufficient earnings"
 
-  생활비부담:
-    - "생활비가 부담돼요"
-    - "월세 부담돼요"
-    - "월세가 너무 비싸요"
-    - "고정지출이 너무 많아요"
-    - "생활비가 모자라요"
+  cost_of_living:
+    - "living cost is heavy"
+    - "rent is a burden"
+    - "rent is too expensive"
+    - "too many fixed expenses"
+    - "short on living expenses"
 
-  생계곤란:
-    - "생계가 곤란해요"
-    - "생계가 어려워요"
+  livelihood_crisis:
+    - "livelihood is difficult"
+    - "livelihood struggle"
 
-  생계위험:
-    - "식비 부족"
-    - "생활비가 모자라요"
-    - "생활이 너무 힘들어요"
+  livelihood_risk:
+    - "not enough food budget"
+    - "short of living expenses"
+    - "life is too hard"
 
-  부채:
-    - "부채가 많아요"
-    - "빚이 있어요"
-    - "대출 상환 어렵다"
-    - "채무 압박"
-    - "부채가 너무 많아요"
+  debt_risk:
+    - "a lot of debt"
+    - "I have debt"
+    - "loan repayment is hard"
+    - "debt pressure"
+    - "too much debt"
 
-  체납:
-    - "세금 체납"
-    - "공과금 체납"
-    - "보험료 체납"
+  arrears:
+    - "tax overdue"
+    - "utility arrears"
+    - "insurance fee arrears"
 
-  건강위험:
-    - "건강이 안 좋아요"
-    - "건강 상태가 안좋아요"
-    - "몸이 아파요"
-    - "치료비 부담"
+  health_risk:
+    - "poor health"
+    - "bad health condition"
+    - "I am sick"
+    - "medical cost burden"
 
-  의료위험:
-    - "병원비 부담"
-    - "병원비 걱정돼요"
-    - "의료비가 너무 비싸요"
+  medical_expense:
+    - "hospital cost burden"
+    - "worried about hospital bills"
+    - "medical bills too expensive"
 
-  돌봄공백:
-    - "돌봐줄 사람이 없어요"
-    - "아이 돌봄 없음"
-    - "부모 돌봄 없음"
-    - "돌봄이 비어 있어요"
+  care_gap:
+    - "no one to take care"
+    - "no child care"
+    - "no parent care"
+    - "care is missing"
