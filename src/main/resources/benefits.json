@@ -43,8 +43,8 @@
       "contact": "복지로/주거지 주민센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -94,8 +94,8 @@
       "contact": "대구시/북구청"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -144,8 +144,8 @@
       "contact": "대구시 청년정책 담당"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -192,8 +192,8 @@
       "contact": "LH 대구 주거복지지사"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -242,8 +242,8 @@
       "contact": "산격동 행정복지센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -290,8 +290,8 @@
       "contact": "129 또는 북구청"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -334,8 +334,8 @@
       "contact": "대구시 청년주거 담당"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -379,8 +379,8 @@
       "contact": "129/주민센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -422,8 +422,8 @@
       "contact": "한전/도시가스 고객센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -465,8 +465,8 @@
       "contact": "각 통신사 고객센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -508,8 +508,8 @@
       "contact": "산격동 행정복지센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -554,8 +554,8 @@
       "contact": "129/북구청"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -602,9 +602,9 @@
       "contact": "북구청 일자리정책과"
     },
     "location": {
-      "lat": null,
-      "lng": null,
-      "radius_m": null,
+      "lat": 35.895,
+      "lng": 128.608,
+      "radius_m": 3000,
       "address_text": "북구청/청년센터"
     },
     "priority_score": 0.97,
@@ -646,8 +646,8 @@
       "contact": "대구고용센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -691,8 +691,8 @@
       "contact": "고용센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -733,8 +733,8 @@
       "contact": "고용노동부/운영기관"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -776,8 +776,8 @@
       "contact": "대구청년센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -818,8 +818,8 @@
       "contact": "대구청년센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -904,8 +904,8 @@
       "contact": "고용센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -945,8 +945,8 @@
       "contact": "대구청년센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -987,8 +987,8 @@
       "contact": "대구시"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -1030,8 +1030,8 @@
       "contact": "장애인고용공단 대구지사"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -1074,8 +1074,8 @@
       "contact": "대구 자립지원기관"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -1250,8 +1250,8 @@
       "contact": "대구광역푸드뱅크"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": "대구 전지역"
     },
@@ -1293,8 +1293,8 @@
       "contact": "주민센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -1379,8 +1379,8 @@
       "contact": "주민센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -1422,8 +1422,8 @@
       "contact": "주민센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -1467,8 +1467,8 @@
       "contact": "129"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -1510,8 +1510,8 @@
       "contact": "대구 청년마음건강센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": "대구 전역"
     },
@@ -1551,8 +1551,8 @@
       "contact": "복지로"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -1593,8 +1593,8 @@
       "contact": "대구청년센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": "대구 전역"
     },
@@ -1635,8 +1635,8 @@
       "contact": "북구 정신건강복지센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": "북구"
     },
@@ -1676,8 +1676,8 @@
       "contact": "1393/112/119"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -1718,8 +1718,8 @@
       "contact": "북구청"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": "북구"
     },
@@ -1760,8 +1760,8 @@
       "contact": "건보공단"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -1802,8 +1802,8 @@
       "contact": "북구보건소"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": "북구 보건소"
     },
@@ -1848,8 +1848,8 @@
       "contact": "가족센터/주민센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -1893,8 +1893,8 @@
       "contact": "가족센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": "북구 가족센터"
     },
@@ -1938,8 +1938,8 @@
       "contact": "대구여성긴급전화 1366"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": "대구"
     },
@@ -1979,8 +1979,8 @@
       "contact": "대구 청소년쉼터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": "대구"
     },
@@ -2021,8 +2021,8 @@
       "contact": "북구 가족센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": "북구"
     },
@@ -2064,8 +2064,8 @@
       "contact": "대구청년센터"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -2105,8 +2105,8 @@
       "contact": "신용회복위원회 대구"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": null
     },
@@ -2147,8 +2147,8 @@
       "contact": "대구시"
     },
     "location": {
-      "lat": null,
-      "lng": null,
+      "lat": 35.8851,
+      "lng": 128.6083,
       "radius_m": null,
       "address_text": "대구 전역"
     },
