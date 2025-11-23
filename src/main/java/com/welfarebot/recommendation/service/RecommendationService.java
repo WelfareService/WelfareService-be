@@ -20,6 +20,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,10 +34,23 @@ import org.springframework.stereotype.Service;
 public class RecommendationService {
 
     private static final int RECOMMENDATION_COUNT = 3;
-    private static final String DECISION_MC_SKIPPED = "MC_SKIPPED";
-    private static final String DECISION_TOP3 = "TOP3_ISSUED";
+    private static final String DECISION_RECOMMEND = "RECOMMEND";
     private static final String DECISION_OVERRIDE = "RECOMMENDATION_OVERRIDE";
-    private static final String DECISION_UNKNOWN = "UNKNOWN_SIGNAL";
+    private static final String DECISION_SKIPPED_MC = "SKIPPED_MC_FAIL";
+    private static final String DECISION_SKIPPED_ALREADY_ISSUED = "SKIPPED_ALREADY_ISSUED";
+    private static final Set<String> CRITICAL_RISK_SIGNALS = Set.of(
+            "주거불안",
+            "미취업",
+            "저소득",
+            "생계위험",
+            "생계곤란",
+            "생활비부담",
+            "부채",
+            "체납",
+            "건강위험",
+            "의료위험",
+            "돌봄공백"
+    );
 
     private final OpenAiService openAiService;
     private final BenefitCatalogService catalogService;
@@ -48,35 +62,38 @@ public class RecommendationService {
     private final RecommendationPolicyLoader policyLoader;
     private final SignalOntologyService signalOntologyService;
 
-    public RecommendationResult chatRecommend(ChatRequest request, RecommendationSessionState sessionState) {
-        User user = (request.getUserId() != null) ? userService.find(request.getUserId()).orElse(null) : null;
-        List<String> baseTags = normalizeBaseTags(user != null ? userService.parseTags(user) : List.of());
+    public RecommendationResult chatRecommend(ChatRequest request, User user, RecommendationSessionState sessionState) {
+        List<String> userBaseTags = userService.parseTags(user);
+        List<String> baseTags = normalizeBaseTags(userBaseTags);
 
         GptMatchResponse gptResponse = openAiService.analyzeMessage(request.getMessage(), user, request.getHistory());
         SignalNormalizationResult signalResult = signalOntologyService.normalizeSignals(gptResponse.getSignals());
         List<String> canonicalSignals = signalResult.canonicalSignals();
         boolean insufficientInfo = Boolean.TRUE.equals(gptResponse.getInsufficientInfo());
+        RiskLevel riskLevel = determineRiskLevel(canonicalSignals);
 
-        List<UserPreRecommendation> pool = preRecommendationService.getPool(user);
-        boolean poolAvailable = !pool.isEmpty();
+        MinimalConditionResult mcResult = evaluateMinimalCondition(insufficientInfo, canonicalSignals,
+                signalResult.hasUnknownOnly());
 
         boolean alreadyIssued = isAlreadyIssued(user, sessionState);
         boolean forceOverride = alreadyIssued && isReRecommendTrigger(request.getMessage());
 
-        MinimalConditionResult mcResult = evaluateMinimalCondition(insufficientInfo, canonicalSignals, poolAvailable,
-                alreadyIssued, forceOverride, signalResult.hasUnknownOnly());
-        RiskLevel riskLevel = determineRiskLevel(canonicalSignals, mcResult);
-
         if (!mcResult.passed()) {
-            String decisionType = signalResult.hasUnknownOnly() ? DECISION_UNKNOWN : DECISION_MC_SKIPPED;
-            saveDecisionLog(user != null ? user.getId() : null, decisionType, mcResult.reasons(), canonicalSignals, riskLevel);
-            return new RecommendationResult(ChatResponse.builder()
-                    .assistantMessage(determineAssistantMessage(gptResponse.getAssistantMessage()))
-                    .recommendations(List.of())
-                    .riskLevel(riskLevel.name())
-                    .build(), false, null);
+            saveDecisionLog(user != null ? user.getId() : null, DECISION_SKIPPED_MC, mcResult.reasons(), canonicalSignals, riskLevel);
+            ChatResponse response = buildResponse(gptResponse.getAssistantMessage(), List.of(), riskLevel, user,
+                    userBaseTags, alreadyIssued);
+            return new RecommendationResult(response, false, null);
         }
 
+        if (alreadyIssued && !forceOverride) {
+            List<String> reasons = List.of("ALREADY_ISSUED");
+            saveDecisionLog(user != null ? user.getId() : null, DECISION_SKIPPED_ALREADY_ISSUED, reasons, canonicalSignals, riskLevel);
+            ChatResponse response = buildResponse(gptResponse.getAssistantMessage(), List.of(), riskLevel, user,
+                    userBaseTags, true);
+            return new RecommendationResult(response, false, null);
+        }
+
+        List<UserPreRecommendation> pool = preRecommendationService.getPool(user);
         Set<String> rejectedIds = rejectService.getRejectedBenefitIds(request.getUserId());
         List<ScoredResult> scoredResults = pool.stream()
                 .map(entry -> scoreEntry(entry, baseTags, canonicalSignals, rejectedIds))
@@ -106,9 +123,10 @@ public class RecommendationService {
         if (issued && user != null) {
             userService.markRecommendationIssued(user);
         }
+        boolean recommendationHistory = alreadyIssued || issued;
 
-        String decisionType = forceOverride ? DECISION_OVERRIDE : DECISION_TOP3;
-        List<String> logReasons = reasonsWithOverride(mcResult);
+        String decisionType = forceOverride ? DECISION_OVERRIDE : DECISION_RECOMMEND;
+        List<String> logReasons = forceOverride ? List.of("RE_REQUEST_TRIGGER") : List.of();
         scoredResults.forEach(result -> saveMatchLog(user, decisionType, logReasons, canonicalSignals, riskLevel,
                 result));
 
@@ -116,11 +134,8 @@ public class RecommendationService {
                 .map(ScoredResult::item)
                 .collect(Collectors.toList());
 
-        ChatResponse response = ChatResponse.builder()
-                .assistantMessage(determineAssistantMessage(gptResponse.getAssistantMessage()))
-                .recommendations(items)
-                .riskLevel(riskLevel.name())
-                .build();
+        ChatResponse response = buildResponse(gptResponse.getAssistantMessage(), items, riskLevel, user,
+                userBaseTags, recommendationHistory);
 
         return new RecommendationResult(response, issued, issuedAt);
     }
@@ -144,43 +159,37 @@ public class RecommendationService {
 
     private MinimalConditionResult evaluateMinimalCondition(boolean insufficientInfo,
                                                             List<String> canonicalSignals,
-                                                            boolean poolAvailable,
-                                                            boolean alreadyIssued,
-                                                            boolean forceOverride,
                                                             boolean unknownOnly) {
         List<String> reasons = new ArrayList<>();
         if (insufficientInfo) {
             reasons.add("INSUFFICIENT_INFO");
         }
         if (!signalOntologyService.containsMinimalConditionSignal(canonicalSignals)) {
-            reasons.add("NO_MINIMAL_SIGNAL");
-        }
-        if (!poolAvailable) {
-            reasons.add("NO_PREPOOL");
-        }
-        if (alreadyIssued && !forceOverride) {
-            reasons.add("ALREADY_ISSUED");
+            reasons.add("NO_CRITICAL_SIGNAL");
         }
         if (unknownOnly) {
             reasons.add("UNKNOWN_SIGNAL");
         }
-        return new MinimalConditionResult(reasons.isEmpty(), List.copyOf(reasons), forceOverride);
+        return new MinimalConditionResult(reasons.isEmpty(), List.copyOf(reasons));
     }
 
-    private RiskLevel determineRiskLevel(List<String> signals, MinimalConditionResult mcResult) {
+    private RiskLevel determineRiskLevel(List<String> signals) {
         if (signals == null || signals.isEmpty()) {
-            return RiskLevel.NONE;
-        }
-        if (!mcResult.passed()) {
             return RiskLevel.LOW;
         }
-        Set<String> signalSet = signals.stream().collect(Collectors.toSet());
-        if ((signalSet.contains("주거불안") && signalSet.contains("미취업"))
-                || (signalSet.contains("심리위험") && signalSet.contains("생계위험"))
-                || (signalSet.contains("돌봄공백") && signalSet.contains("생계위험"))) {
+        Set<String> signalSet = signals.stream()
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+        long criticalCount = signalSet.stream()
+                .filter(CRITICAL_RISK_SIGNALS::contains)
+                .count();
+        if (criticalCount >= 2) {
             return RiskLevel.HIGH;
         }
-        return RiskLevel.MEDIUM;
+        if (criticalCount == 1) {
+            return RiskLevel.MID;
+        }
+        return RiskLevel.LOW;
     }
 
     private Optional<ScoredResult> scoreEntry(UserPreRecommendation entry,
@@ -267,6 +276,23 @@ public class RecommendationService {
                         .lat(benefit.getLocation() != null ? benefit.getLocation().getLat() : null)
                         .lng(benefit.getLocation() != null ? benefit.getLocation().getLng() : null)
                         .build())
+                .build();
+    }
+
+    private ChatResponse buildResponse(String assistantMessage,
+                                       List<ChatResponse.RecommendationItem> items,
+                                       RiskLevel riskLevel,
+                                       User user,
+                                       List<String> userBaseTags,
+                                       boolean recommendationIssuedFlag) {
+        return ChatResponse.builder()
+                .assistantMessage(determineAssistantMessage(assistantMessage))
+                .recommendations(items)
+                .riskLevel(riskLevel.name())
+                .userName(resolveUserName(user))
+                .residence(resolveResidence(user))
+                .baseTags(userBaseTags)
+                .recommendationIssued(recommendationIssuedFlag)
                 .build();
     }
 
@@ -362,20 +388,24 @@ public class RecommendationService {
     private record BoostLog(String type, double amount) {
     }
 
-    private record MinimalConditionResult(boolean passed, List<String> reasons, boolean forcedOverride) {
-    }
-
-    private List<String> reasonsWithOverride(MinimalConditionResult mcResult) {
-        if (!mcResult.forcedOverride()) {
-            return mcResult.reasons();
-        }
-        List<String> augmented = new ArrayList<>();
-        augmented.add("RE_REQUEST_TRIGGER");
-        augmented.addAll(mcResult.reasons());
-        return List.copyOf(augmented);
+    private record MinimalConditionResult(boolean passed, List<String> reasons) {
     }
 
     public record RecommendationResult(ChatResponse response, boolean recommendationIssued, LocalDateTime issuedAt) {
+    }
+
+    private String resolveUserName(User user) {
+        if (user == null || user.getName() == null || user.getName().isBlank()) {
+            return "알 수 없음";
+        }
+        return user.getName();
+    }
+
+    private String resolveResidence(User user) {
+        if (user == null || user.getResidence() == null || user.getResidence().isBlank()) {
+            return "미입력";
+        }
+        return user.getResidence();
     }
 
     private static class BoostAccumulator {
@@ -403,8 +433,7 @@ public class RecommendationService {
 
     private enum RiskLevel {
         HIGH,
-        MEDIUM,
-        LOW,
-        NONE
+        MID,
+        LOW
     }
 }

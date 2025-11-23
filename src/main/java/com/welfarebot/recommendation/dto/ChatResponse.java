@@ -10,6 +10,10 @@ public class ChatResponse {
     private String assistantMessage;
     private List<RecommendationItem> recommendations;
     private String riskLevel;
+    private String userName;
+    private String residence;
+    private List<String> baseTags;
+    private boolean recommendationIssued;
 
     @Data
     @Builder

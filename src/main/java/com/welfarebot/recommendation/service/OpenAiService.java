@@ -6,8 +6,10 @@ import com.welfarebot.recommendation.dto.ConversationTurn;
 import com.welfarebot.recommendation.dto.GptMatchResponse;
 import com.welfarebot.recommendation.model.User;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,14 +36,11 @@ public class OpenAiService {
 
     public GptMatchResponse analyzeMessage(String userMessage, User user, List<ConversationTurn> history) {
         String systemPrompt = loadPrompt("prompt_match_engine.txt");
-        String payload = buildPayload(user, history, userMessage);
+        List<Map<String, String>> messages = buildMessages(systemPrompt, user, history, userMessage);
 
         Map<String, Object> body = Map.of(
                 "model", model,
-                "messages", new Object[]{
-                        Map.of("role", "system", "content", systemPrompt),
-                        Map.of("role", "user", "content", payload)
-                }
+                "messages", messages
         );
 
         String raw = restClientBuilder.baseUrl(baseUrl)
@@ -78,60 +77,84 @@ public class OpenAiService {
     }
 
     private String buildUserProfileBlock(User user) {
-        if (user == null) {
-            return """
-            - name: 알 수 없음
-            - age: 미입력
-            - residence: 미입력
-            - base tags: []
-            """;
-        }
-        String name = user.getName() != null ? user.getName() : "알 수 없음";
-        String age = user.getAge() != null ? user.getAge().toString() : "미입력";
-        String residence = user.getResidence() != null ? user.getResidence() : "미입력";
+        String name = (user != null && user.getName() != null && !user.getName().isBlank())
+                ? user.getName()
+                : "알 수 없음";
+        String age = (user != null && user.getAge() != null) ? user.getAge().toString() : "미입력";
+        String residence = (user != null && user.getResidence() != null && !user.getResidence().isBlank())
+                ? user.getResidence()
+                : "미입력";
         List<String> tags = parseTags(user);
-        return String.format("""
-        - name: %s
-        - age: %s
-        - residence: %s
-        - base tags: %s
-        이 정보는 이미 확인된 사실이다. assistantMessage에서 다시 묻지 않는다.
-        """, name, age, residence, tags);
+        return """
+{
+  "name": %s,
+  "age": %s,
+  "residence": %s,
+  "baseTags": %s
+}
+이 정보는 이미 확인된 사실이다. assistantMessage에서 다시 묻지 않는다.
+""".formatted(
+                toJsonValue(name),
+                toJsonValue(age),
+                toJsonValue(residence),
+                toJsonValue(tags)
+        );
     }
 
-    private String buildConversationHistoryBlock(List<ConversationTurn> history) {
-        if (history == null || history.isEmpty()) {
-            return "(이전 대화 없음)";
-        }
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < history.size(); i++) {
-            ConversationTurn turn = history.get(i);
-            String role = turn.getRole() != null ? turn.getRole() : "unknown";
-            String message = turn.getMessage() != null ? turn.getMessage() : "";
-            sb.append(i + 1)
-                    .append('.').append(' ')
-                    .append(role).append(": ")
-                    .append(message).append('\n');
-        }
-        return sb.toString().trim();
-    }
+    private List<Map<String, String>> buildMessages(String systemPrompt,
+                                                    User user,
+                                                    List<ConversationTurn> history,
+                                                    String latestMessage) {
+        List<Map<String, String>> messages = new ArrayList<>();
+        messages.add(Map.of("role", "system", "content", systemPrompt));
+        messages.add(Map.of("role", "user", "content", "[USER PROFILE]\n" + buildUserProfileBlock(user)));
 
-    private String buildPayload(User user, List<ConversationTurn> history, String latestMessage) {
-        StringBuilder payload = new StringBuilder();
-        payload.append("[USER PROFILE]\n").append(buildUserProfileBlock(user)).append("\n\n");
-        payload.append("[CONVERSATION HISTORY]\n").append(buildConversationHistoryBlock(history)).append("\n\n");
-        payload.append("[NEW MESSAGE]\n").append(latestMessage != null ? latestMessage : "");
-        return payload.toString();
+        if (history != null) {
+            for (ConversationTurn turn : history) {
+                String role = normalizeRole(turn.getRole());
+                if (role == null) {
+                    continue;
+                }
+                String content = turn.getMessage() != null ? turn.getMessage() : "";
+                messages.add(Map.of("role", role, "content", content));
+            }
+        }
+
+        messages.add(Map.of("role", "user", "content", latestMessage != null ? latestMessage : ""));
+        return messages;
     }
 
     private List<String> parseTags(User user) {
-        if (user.getBaseTags() == null) {
+        if (user == null || user.getBaseTags() == null) {
             return List.of();
         }
         try {
             return objectMapper.readValue(user.getBaseTags(), new TypeReference<List<String>>() {});
         } catch (Exception e) {
             return Collections.emptyList();
+        }
+    }
+
+    private String normalizeRole(String role) {
+        if (role == null) {
+            return null;
+        }
+        String value = role.trim().toLowerCase(Locale.ROOT);
+        return switch (value) {
+            case "assistant" -> "assistant";
+            case "user" -> "user";
+            default -> null;
+        };
+    }
+
+    private String toJsonValue(Object value) {
+        try {
+            return objectMapper.writeValueAsString(value);
+        } catch (Exception e) {
+            if (value == null) {
+                return "null";
+            }
+            return "\"" + value.toString().replace("\"", "\\\"") + "\"";
         }
     }
 }

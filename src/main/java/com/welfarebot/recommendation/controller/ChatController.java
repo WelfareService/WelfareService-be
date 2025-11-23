@@ -2,9 +2,11 @@ package com.welfarebot.recommendation.controller;
 
 import com.welfarebot.recommendation.dto.ChatRequest;
 import com.welfarebot.recommendation.dto.ChatResponse;
+import com.welfarebot.recommendation.model.User;
 import com.welfarebot.recommendation.service.RecommendationService;
 import com.welfarebot.recommendation.service.RecommendationSessionTracker;
 import com.welfarebot.recommendation.service.RecommendationSessionTracker.RecommendationSessionState;
+import com.welfarebot.recommendation.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -13,6 +15,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +31,7 @@ public class ChatController {
 
     private final RecommendationService recommendationService;
     private final RecommendationSessionTracker sessionTracker;
+    private final UserService userService;
 
     @PostMapping("/chat")
     @Operation(
@@ -38,10 +44,12 @@ public class ChatController {
             responses = @ApiResponse(responseCode = "200", description = "추천 성공 또는 MC 차단 시에도 assistantMessage와 riskLevel을 반환합니다.",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ChatResponse.class)))
     )
-    public ChatResponse chat(@RequestBody ChatRequest req, HttpSession session) {
+    public ChatResponse chat(@Valid @RequestBody ChatRequest req, HttpSession session) {
+        User user = userService.find(req.getUserId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         RecommendationSessionState state = sessionTracker.read(session);
-        RecommendationService.RecommendationResult result = recommendationService.chatRecommend(req, state);
-        if (result.recommendationIssued() && req.getUserId() == null) {
+        RecommendationService.RecommendationResult result = recommendationService.chatRecommend(req, user, state);
+        if (result.recommendationIssued()) {
             sessionTracker.markIssued(session, result.issuedAt());
         }
         return result.response();
